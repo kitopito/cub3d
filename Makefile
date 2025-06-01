@@ -12,17 +12,24 @@ SRCS = main.c \
 OBJS := $(SRCS:.c=.o)
 
 #LIBFT = libft/libft.a 
+MINILIBX = minilibx-linux/libmlx.a
 
-#LIBS = -lreadline
+LIBS = -lm
 #INCLUDES = -Ilibft
 
 all: $(NAME)
 
-$(NAME): $(OBJ_DIR) $(OBJS) #$(LIBFT)
+$(NAME): $(OBJ_DIR) $(OBJS) $(MINILIBX) #$(LIBFT)
 	$(CC) -v $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME) 
 
 $(LIBFT):
 	make -C libft bonus
+	
+$(MINILIBX):
+	@if [ ! -d "minilibx-linux" ]; then \
+		git clone https://github.com/42paris/minilibx-linux.git; \
+	fi
+	make -C minilibx-linux
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@ $(INCLUDES)

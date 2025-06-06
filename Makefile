@@ -11,35 +11,34 @@ SRCS = main.c \
 
 OBJS := $(SRCS:.c=.o)
 
-#LIBFT = libft/libft.a 
-
-#LIBS = -lreadline
-#INCLUDES = -Ilibft
+LIBFT = libft/libft.a 
+LIBS = -lreadline
+INCLUDES = -Ilibft
 
 all: $(NAME)
 
-$(NAME): $(OBJ_DIR) $(OBJS) #$(LIBFT)
-	$(CC) -v $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME) 
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) -v $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME)
 
 $(LIBFT):
-	make -C libft bonus
+	make -C libft
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@ $(INCLUDES)
 
 clean:
 	rm -f $(OBJS) $(B_OBJS)
-#	make -C libft clean
+	make -C libft clean
 
 fclean: clean
 	rm -f $(NAME)
-#	make -C libft fclean
+	make -C libft fclean
 
 re: fclean all
 
 bonus: all
 
-debug: 
+debug:
 	make re DEBUG=-g
 
 .PHONY: all clean fclean re bonus debug

@@ -3,42 +3,44 @@ CFLAGS = -Wall -Wextra -Werror
 
 NAME = cub3d
 
-PARSE_DIR = parse/
-PARSE_SRCS = 
+SRC_DIR := srcs
+SRCS_MAIN := main.c
 
-SRCS = main.c \
-	$(addprefix $(PARSE_DIR), $(PARSE_SRCS)) \
+SRCS_UTILS := $(addprefix $(SRC_DIR)/, \
+	init.c parser.c utils.c debug.c)
 
+SRCS := $(SRCS_MAIN) $(SRCS_UTILS)
 OBJS := $(SRCS:.c=.o)
 
-LIBFT = libft/libft.a 
-LIBS = -lreadline
-INCLUDES = -Ilibft
+LIBFT_DIR := libft
+LIBFT := $(LIBFT_DIR)/libft.a
+LIBS := -lreadline
+
+# macOS向けreadline対応
+ifeq ($(shell uname), Darwin)
+	READLINE_DIR := $(shell brew --prefix readline)
+	CFLAGS += -I$(READLINE_DIR)/include
+	LDFLAGS += -L$(READLINE_DIR)/lib
+endif
+
+MAKE_LIBFT = $(MAKE) -C $(LIBFT_DIR)
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) -v $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) $(LDFLAGS) -o $(NAME)
 
 $(LIBFT):
-	make -C libft
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@ $(INCLUDES)
+	$(MAKE_LIBFT)
 
 clean:
-	rm -f $(OBJS) $(B_OBJS)
-	make -C libft clean
+	rm -f $(OBJS)
+	$(MAKE_LIBFT) clean
 
 fclean: clean
 	rm -f $(NAME)
-	make -C libft fclean
+	$(MAKE_LIBFT) fclean
 
 re: fclean all
 
-bonus: all
-
-debug:
-	make re DEBUG=-g
-
-.PHONY: all clean fclean re bonus debug
+.PHONY: all clean fclean re

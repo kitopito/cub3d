@@ -14,7 +14,7 @@ OBJS := $(SRCS:.c=.o)
 #LIBFT = libft/libft.a 
 MINILIBX = minilibx-linux/libmlx.a
 
-LIBS = -lm
+LIBS = -lm -lXext -lX11 -lz
 #INCLUDES = -Ilibft
 
 all: $(NAME)

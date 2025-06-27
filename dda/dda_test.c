@@ -53,8 +53,8 @@ void dda_test_init(t_dda_test *dda_test)
             map[i][j] = worldMap[j][i];
         }
     }
-    dda_test->x = 22.5;
-    dda_test->y = 12.5;
+    dda_test->x = 22.0;
+    dda_test->y = 12.0;
     dda_test->step_x = 1;
     dda_test->step_y = 1;
     dda_test->delta_x = 0.5;
@@ -104,8 +104,8 @@ int main(void)
 {
     t_dda_test dda_test;
 
-    //dda_test_init(&dda_test);
-    dda_test_init_mini_map(&dda_test);
+    dda_test_init(&dda_test);
+    //dda_test_init_mini_map(&dda_test);
 
     // Here you would typically call your DDA function and process the results.
     // For this example, we will just print the initial values.

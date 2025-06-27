@@ -10,8 +10,9 @@ int dda(t_dda_test *dda_data, t_data *img_data) {
     while(i < windowWidth) {
         double ray_length;
         t_vector ray_dir;
-        ray_dir.x = dda_data->dirX + ((i / (double)windowWidth) * 2 - 1) * dda_data->planeX;
-        ray_dir.y = dda_data->dirY + ((i / (double)windowWidth) * 2 - 1) * dda_data->planeY;
+        double camera_x = 2 * i / (double)windowWidth - 1;
+        ray_dir.x = dda_data->dirX + camera_x * dda_data->planeX;
+        ray_dir.y = dda_data->dirY + camera_x * dda_data->planeY;
         
         int mapX = (int)dda_data->x;
         int mapY = (int)dda_data->y;
@@ -67,9 +68,9 @@ int dda(t_dda_test *dda_data, t_data *img_data) {
         int h = windowHeight;
         int line_height;
         if (side == 0) {
-            line_height = (int)(h / dda_data->side_dist_x);
+            line_height = (int)(h / (dda_data->side_dist_x - dda_data->delta_x));
         } else {
-            line_height = (int)(h / dda_data->side_dist_y);
+            line_height = (int)(h / (dda_data->side_dist_y - dda_data->delta_y));
         }
         
         int draw_start = h / 2 - line_height / 2;

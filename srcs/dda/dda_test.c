@@ -127,3 +127,7 @@ int main(void)
 
     return 0;
 }
+
+/*
+cc -I../minilibx-linux *.c ../minilibx-linux/libmlx.a -lXext -lX11 -lz
+*/

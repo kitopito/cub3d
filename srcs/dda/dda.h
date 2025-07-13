@@ -9,6 +9,6 @@ typedef struct s_vector {
     double y;
 } t_vector;
 
-int dda(t_dda_test *dda_data, t_data *img_data);
+int dda(t_dda *dda_data, t_img_data *img_data);
 
 #endif

@@ -1,5 +1,6 @@
 #include "dda_test.h"
 #include "dda.h"
+#include "../hooks/hooks.h"
 
 #define mapWidth 24
 #define mapHeight 24
@@ -43,7 +44,7 @@ int miniMap[6][6] = {
     {1, 1, 1, 1, 1, 1},
 };
 
-void dda_test_init(t_dda_test *dda_test)
+void dda_test_init(t_dda *dda_test)
 {
     //worldmapをint**に変換
     int **map = malloc(mapHeight * sizeof(int *));
@@ -70,7 +71,7 @@ void dda_test_init(t_dda_test *dda_test)
     dda_test->map_height = mapHeight;
 }
 
-void dda_test_init_mini_map(t_dda_test *dda_test)
+void dda_test_init_mini_map(t_dda *dda_test)
 {
     // miniMapをint**に変換
     int **map = malloc(6 * sizeof(int *));
@@ -93,7 +94,7 @@ void dda_test_init_mini_map(t_dda_test *dda_test)
     dda_test->planeY = dda_test->dirX * 3;
 }
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
 {
 	char	*dst;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
@@ -102,7 +103,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 int main(void)
 {
-    t_dda_test dda_test;
+    t_dda dda_test;
 
     dda_test_init(&dda_test);
     //dda_test_init_mini_map(&dda_test);
@@ -114,20 +115,29 @@ int main(void)
     printf("Step: (%d, %d)\n", dda_test.step_x, dda_test.step_y);
     printf("Delta: (%.2f, %.2f)\n", dda_test.delta_x, dda_test.delta_y);
     
-    t_data	img;
+    t_img_data	img;
+    t_test test_data;
 
 	void *mlx = mlx_init();
 	void *mlx_win = mlx_new_window(mlx, windowWidth, windowHeight, "Hello world!");
+    test_data.dda_data = dda_test;
+    test_data.mlx = mlx;
+    test_data.win = mlx_win;
+
+    mlx_key_hook(mlx_win, key_hook, &test_data);
+    mlx_hook(mlx_win, 17, 0, destroy_hook, &test_data);
 	img.img = mlx_new_image(mlx, windowWidth, windowHeight);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
     dda(&dda_test, &img);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
+    end_cub3d(&test_data);
 
     return 0;
 }
 
 /*
-cc -I../minilibx-linux *.c ../minilibx-linux/libmlx.a -lXext -lX11 -lz
+in directory: srcs/dda
+cc -I../../minilibx-linux *.c ../hooks/*.c ../../minilibx-linux/libmlx.a -lXext -lX11 -lz
 */

@@ -5,7 +5,7 @@
 #include "dda_test.h"
 #include "dda.h"
 
-int dda(t_dda_test *dda_data, t_data *img_data) {
+int dda(t_dda *dda_data, t_img_data *img_data) {
     int i = 0;
     while(i < windowWidth) {
         double ray_length;

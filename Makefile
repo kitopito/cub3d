@@ -14,7 +14,9 @@ OBJS := $(SRCS:.c=.o)
 
 LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
-LIBS := -lreadline
+LIBS := -lreadline -lm -lXext -lX11 -lz
+
+MINILIBX = minilibx-linux/libmlx.a
 
 # macOS向けreadline対応
 ifeq ($(shell uname), Darwin)
@@ -27,11 +29,14 @@ MAKE_LIBFT = $(MAKE) -C $(LIBFT_DIR)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) $(LDFLAGS) -o $(NAME)
+$(NAME): $(OBJS) $(MINILIBX) $(LIBFT)
+	$(CC) -v $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME) 
 
 $(LIBFT):
 	$(MAKE_LIBFT)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@ $(INCLUDES)
 
 clean:
 	rm -f $(OBJS)

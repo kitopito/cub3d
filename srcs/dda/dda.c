@@ -5,7 +5,16 @@
 #include "dda_test.h"
 #include "dda.h"
 
+void fill_img(t_img_data *img_data, int color) {
+    for (int y = 0; y < windowHeight; y++) {
+        for (int x = 0; x < windowWidth; x++) {
+            my_mlx_pixel_put(img_data, x, y, color);
+        }
+    }
+}
+
 int dda(t_dda *dda_data, t_img_data *img_data) {
+    fill_img(img_data, 0x000000);
     int i = 0;
     while(i < windowWidth) {
         double ray_length;
@@ -41,9 +50,9 @@ int dda(t_dda *dda_data, t_img_data *img_data) {
             dda_data->step_y = 1;
             dda_data->side_dist_y = (mapY + 1.0 - dda_data->y) * dda_data->delta_y;
         }
-        printf("Ray direction: (%lf, %lf)\n", ray_dir.x, ray_dir.y);
-        printf("Delta distances: X = %lf, Y = %lf\n", dda_data->delta_x, dda_data->delta_y);
-        printf("Initial side distances: X = %lf, Y = %lf\n", dda_data->side_dist_x, dda_data->side_dist_y);
+        // printf("Ray direction: (%lf, %lf)\n", ray_dir.x, ray_dir.y);
+        // printf("Delta distances: X = %lf, Y = %lf\n", dda_data->delta_x, dda_data->delta_y);
+        // printf("Initial side distances: X = %lf, Y = %lf\n", dda_data->side_dist_x, dda_data->side_dist_y);
         
         int side = -1;
         while(1) {
@@ -64,7 +73,7 @@ int dda(t_dda *dda_data, t_img_data *img_data) {
                 break;
             }
         }
-        printf("Map hit at (%d, %d) with side %d\n", mapX, mapY, side);
+        // printf("Map hit at (%d, %d) with side %d\n", mapX, mapY, side);
         int h = windowHeight;
         int line_height;
         if (side == 0) {

@@ -120,12 +120,19 @@ int main(void)
 
 	void *mlx = mlx_init();
 	void *mlx_win = mlx_new_window(mlx, windowWidth, windowHeight, "Hello world!");
-    test_data.dda_data = dda_test;
+    test_data.dda_data = &dda_test;
     test_data.mlx = mlx;
     test_data.win = mlx_win;
+    test_data.img = &img;
+    
+    t_key_state key_state;
+    init_key_state(&key_state);
+    test_data.key_state = &key_state;
 
-    mlx_key_hook(mlx_win, key_hook, &test_data);
+    mlx_key_hook(mlx_win, key_up, &test_data);
+    mlx_hook(mlx_win, 2, 1L<<0, key_down, &test_data);
     mlx_hook(mlx_win, 17, 0, destroy_hook, &test_data);
+    mlx_loop_hook(mlx, render, &test_data);
 	img.img = mlx_new_image(mlx, windowWidth, windowHeight);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
@@ -139,5 +146,5 @@ int main(void)
 
 /*
 in directory: srcs/dda
-cc -I../../minilibx-linux *.c ../hooks/*.c ../../minilibx-linux/libmlx.a -lXext -lX11 -lz
+cc -I../../minilibx-linux *.c ../hooks/*.c ../../minilibx-linux/libmlx.a -lXext -lX11 -lz -lm
 */

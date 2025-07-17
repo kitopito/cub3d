@@ -83,7 +83,6 @@ int render(t_test *data) {
     }
     dda(data->dda_data, data->img);
     mlx_put_image_to_window(data->mlx, data->win, data->img->img, 0, 0);
-    //mlx_do_sync(data->mlx); // Ensure the image is updated in the window
     return 0;
 }
 

@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "../hooks/hooks.h"
+#include "../hooks/key_state.h"
 
-typedef struct s_dda_test
+typedef struct s_dda
 {
     double x;
     double y;
@@ -24,17 +26,26 @@ typedef struct s_dda_test
     int **map;
     int map_width;
     int map_height;
-} t_dda_test;
+} t_dda;
 
-typedef struct	s_data {
+typedef struct	s_img_data {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_data;
+}				t_img_data;
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+typedef struct s_test
+{
+    t_dda *dda_data;
+    void *mlx;
+    void *win;
+    t_img_data *img;
+    t_key_state *key_state;
+} t_test;
+
+void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color);
 
 # define windowWidth 1280
 # define windowHeight 720

@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:14:34 by ywada             #+#    #+#             */
-/*   Updated: 2025/08/11 19:14:36 by ywada            ###   ########.fr       */
+/*   Updated: 2025/08/11 19:35:52 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,15 @@ typedef struct	s_img_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int width;
+	int height;
 }				t_img_data;
 
 typedef struct s_config {
-	char *north_texture;
-	char *south_texture;
-	char *west_texture;
-	char *east_texture;
+	t_img_data *north_texture;
+	t_img_data *south_texture;
+	t_img_data *west_texture;
+	t_img_data *east_texture;
 	char **map;
 	int rows;
 	int columns;
@@ -72,5 +74,8 @@ typedef struct s_cub3d {
 void    init_data(t_data *data);
 void    parse_map(t_data *data, char *filepath);
 void    free_map(char **map);
+void init_cub3d(t_cub3d *cub3d);
+void set_cub3d(t_cub3d *cub3d, char *filepath);
+void free_cub3d(t_cub3d *cub3d);
 
 #endif

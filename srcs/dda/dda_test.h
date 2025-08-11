@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dda_test.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/11 19:15:26 by ywada             #+#    #+#             */
+/*   Updated: 2025/08/11 19:15:51 by ywada            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #ifndef DDA_TEST_H
 # define DDA_TEST_H
@@ -27,14 +39,6 @@ typedef struct s_dda
     int map_width;
     int map_height;
 } t_dda;
-
-typedef struct	s_img_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_img_data;
 
 typedef struct s_test
 {

@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:15:26 by ywada             #+#    #+#             */
-/*   Updated: 2025/08/11 20:26:01 by ywada            ###   ########.fr       */
+/*   Updated: 2025/08/12 17:24:41 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,6 @@
 # include <mlx.h>
 # include <stdio.h>
 # include <stdlib.h>
-
-typedef struct s_dda
-{
-	double		x;
-	double		y;
-	int			step_x;
-	int			step_y;
-	double		delta_x;
-	double		delta_y;
-	double		side_dist_x;
-	double		side_dist_y;
-	double		dirX;
-	double		dirY;
-	double		planeX;
-	double		planeY;
-	int			**map;
-	int			map_width;
-	int			map_height;
-}				t_dda;
 
 typedef struct s_test
 {

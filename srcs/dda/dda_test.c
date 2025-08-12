@@ -6,157 +6,175 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:15:29 by ywada             #+#    #+#             */
-/*   Updated: 2025/08/11 19:15:51 by ywada            ###   ########.fr       */
+/*   Updated: 2025/08/12 01:25:16 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "dda_test.h"
-#include "dda.h"
 #include "../hooks/hooks.h"
+#include "dda.h"
+#include "dda_test.h"
 
 #define mapWidth 24
 #define mapHeight 24
 #define screenWidth 640
 #define screenHeight 480
 
-int worldMap[mapWidth][mapHeight]=
-{
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
-  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
-  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,0,0,0,5,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+int		worldMap[mapWidth][mapHeight] = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0,
+			0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1}, {1, 0, 0,
+			0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, {1,
+			0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
+			1}, {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 1}, {1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0,
+			1, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+										{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 1, 0, 0, 0, 0, 5, 0, 1, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+											0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+											{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+											1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+											1}};
+
+int		miniMap[6][6] = {
+	{1, 1, 1, 1, 1, 1},
+	{1, 0, 1, 0, 1, 1},
+	{1, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1, 1},
 };
 
-int miniMap[6][6] = {
-    {1, 1, 1, 1, 1, 1},
-    {1, 0, 1, 0, 1, 1},
-    {1, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1, 1},
-};
-
-void dda_test_init(t_dda *dda_test)
+void	dda_test_init(t_dda *dda_data)
 {
-    //worldmapをint**に変換
-    int **map = malloc(mapHeight * sizeof(int *));
-    for (int i = 0; i < mapHeight; i++) {
-        map[i] = malloc(mapWidth * sizeof(int));
-        for (int j = 0; j < mapWidth; j++) {
-            map[i][j] = worldMap[j][i];
-        }
-    }
-    dda_test->x = 22.0;
-    dda_test->y = 12.0;
-    dda_test->step_x = 1;
-    dda_test->step_y = 1;
-    dda_test->delta_x = 0.5;
-    dda_test->delta_y = 0.5;
-    dda_test->side_dist_x = 0.0;
-    dda_test->side_dist_y = 0.0;
-    dda_test->dirX = -1.0;
-    dda_test->dirY = 0.0;
-    dda_test->planeX = 0.0;
-    dda_test->planeY = 0.66;
-    dda_test->map = map;
-    dda_test->map_width = mapWidth;
-    dda_test->map_height = mapHeight;
+	int	**map;
+
+	// worldmapをint**に変換
+	map = malloc(mapHeight * sizeof(int *));
+	for (int i = 0; i < mapHeight; i++)
+	{
+		map[i] = malloc(mapWidth * sizeof(int));
+		for (int j = 0; j < mapWidth; j++)
+		{
+			map[i][j] = worldMap[j][i];
+		}
+	}
+	dda_data->x = 22.0;
+	dda_data->y = 12.0;
+	dda_data->step_x = 1;
+	dda_data->step_y = 1;
+	dda_data->delta_x = 0.5;
+	dda_data->delta_y = 0.5;
+	dda_data->side_dist_x = 0.0;
+	dda_data->side_dist_y = 0.0;
+	dda_data->dirX = -1.0;
+	dda_data->dirY = 0.0;
+	dda_data->planeX = 0.0;
+	dda_data->planeY = 0.66;
+	dda_data->map = map;
+	dda_data->map_width = mapWidth;
+	dda_data->map_height = mapHeight;
 }
 
-void dda_test_init_mini_map(t_dda *dda_test)
+void	dda_test_init_mini_map(t_dda *dda_test)
 {
-    // miniMapをint**に変換
-    int **map = malloc(6 * sizeof(int *));
-    for (int i = 0; i < 6; i++) {
-        map[i] = malloc(6 * sizeof(int));
-        for (int j = 0; j < 6; j++) {
-            map[i][j] = miniMap[j][i];
-        }
-    }
-    dda_test->map = map;
-    dda_test->map_width = 6;
-    dda_test->map_height = 6;
+	int	**map;
 
-    dda_test->x = 2;
-    dda_test->y = 4;
-    dda_test->dirX = 0.0;
-    dda_test->dirY = -1.0;
-    // calulate plane direction
-    dda_test->planeX = -dda_test->dirY * 3;
-    dda_test->planeY = dda_test->dirX * 3;
+	// miniMapをint**に変換
+	map = malloc(6 * sizeof(int *));
+	for (int i = 0; i < 6; i++)
+	{
+		map[i] = malloc(6 * sizeof(int));
+		for (int j = 0; j < 6; j++)
+		{
+			map[i][j] = miniMap[j][i];
+		}
+	}
+	dda_test->map = map;
+	dda_test->map_width = 6;
+	dda_test->map_height = 6;
+	dda_test->x = 2;
+	dda_test->y = 4;
+	dda_test->dirX = 0.0;
+	dda_test->dirY = -1.0;
+	// calulate plane direction
+	dda_test->planeX = -dda_test->dirY * 3;
+	dda_test->planeY = dda_test->dirX * 3;
 }
 
 void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
 {
 	char	*dst;
+
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 }
 
-int main(void)
+int	main(void)
 {
-    t_dda dda_test;
+	t_dda		dda_test;
+	t_img_data	img;
+	t_test		test_data;
+	void		*mlx;
+	void		*mlx_win;
+	t_key_state	key_state;
 
-    dda_test_init(&dda_test);
-    //dda_test_init_mini_map(&dda_test);
-
-    // Here you would typically call your DDA function and process the results.
-    // For this example, we will just print the initial values.
-    printf("DDA Test Initialized:\n");
-    printf("Position: (%lf, %lf)\n", dda_test.x, dda_test.y);
-    printf("Step: (%d, %d)\n", dda_test.step_x, dda_test.step_y);
-    printf("Delta: (%.2f, %.2f)\n", dda_test.delta_x, dda_test.delta_y);
-    
-    t_img_data	img;
-    t_test test_data;
-
-	void *mlx = mlx_init();
-	void *mlx_win = mlx_new_window(mlx, windowWidth, windowHeight, "Hello world!");
-    test_data.dda_data = &dda_test;
-    test_data.mlx = mlx;
-    test_data.win = mlx_win;
-    test_data.img = &img;
-    
-    t_key_state key_state;
-    init_key_state(&key_state);
-    test_data.key_state = &key_state;
-
-    mlx_key_hook(mlx_win, key_up, &test_data);
-    mlx_hook(mlx_win, 2, 1L<<0, key_down, &test_data);
-    mlx_hook(mlx_win, 17, 0, destroy_hook, &test_data);
-    mlx_loop_hook(mlx, render, &test_data);
+	dda_test_init(&dda_test);
+	// dda_test_init_mini_map(&dda_test);
+	// Here you would typically call your DDA function and process the results.
+	// For this example, we will just print the initial values.
+	printf("DDA Test Initialized:\n");
+	printf("Position: (%lf, %lf)\n", dda_test.x, dda_test.y);
+	printf("Step: (%d, %d)\n", dda_test.step_x, dda_test.step_y);
+	printf("Delta: (%.2f, %.2f)\n", dda_test.delta_x, dda_test.delta_y);
+	mlx = mlx_init();
+	mlx_win = mlx_new_window(mlx, windowWidth, windowHeight, "Hello world!");
+	test_data.dda_data = &dda_test;
+	test_data.mlx = mlx;
+	test_data.win = mlx_win;
+	test_data.img = &img;
+	init_key_state(&key_state);
+	test_data.key_state = &key_state;
+	mlx_key_hook(mlx_win, key_up, &test_data);
+	mlx_hook(mlx_win, 2, 1L << 0, key_down, &test_data);
+	mlx_hook(mlx_win, 17, 0, destroy_hook, &test_data);
+	mlx_loop_hook(mlx, render, &test_data);
 	img.img = mlx_new_image(mlx, windowWidth, windowHeight);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	//my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
-    dda(&dda_test, &img);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+			&img.endian);
+	// my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
+	dda(&dda_test, &img);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
-    end_cub3d(&test_data);
-
-    return 0;
+	end_cub3d(&test_data);
+	return (0);
 }
 
 /*
 in directory: srcs/dda
-cc -I../../minilibx-linux *.c ../hooks/*.c ../../minilibx-linux/libmlx.a -lXext -lX11 -lz -lm
+cc -I../../minilibx-linux *.c ../hooks/*.c ../../minilibx-linux/libmlx.a -lXext
+	-lX11 -lz -lm
 */

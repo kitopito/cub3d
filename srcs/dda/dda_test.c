@@ -68,62 +68,31 @@ int		miniMap[6][6] = {
 	{1, 1, 1, 1, 1, 1},
 };
 
-void	dda_test_init(t_dda *dda_data)
-{
-	int	**map;
+// void	dda_test_init_mini_map(t_dda *dda_test)
+// {
+// 	// int	**map;
 
-	// worldmapをint**に変換
-	map = malloc(mapHeight * sizeof(int *));
-	for (int i = 0; i < mapHeight; i++)
-	{
-		map[i] = malloc(mapWidth * sizeof(int));
-		for (int j = 0; j < mapWidth; j++)
-		{
-			map[i][j] = worldMap[j][i];
-		}
-	}
-	dda_data->x = 22.0;
-	dda_data->y = 12.0;
-	dda_data->step_x = 1;
-	dda_data->step_y = 1;
-	dda_data->delta_x = 0.5;
-	dda_data->delta_y = 0.5;
-	dda_data->side_dist_x = 0.0;
-	dda_data->side_dist_y = 0.0;
-	dda_data->dirX = -1.0;
-	dda_data->dirY = 0.0;
-	dda_data->planeX = 0.0;
-	dda_data->planeY = 0.66;
-	dda_data->map = map;
-	dda_data->map_width = mapWidth;
-	dda_data->map_height = mapHeight;
-}
-
-void	dda_test_init_mini_map(t_dda *dda_test)
-{
-	int	**map;
-
-	// miniMapをint**に変換
-	map = malloc(6 * sizeof(int *));
-	for (int i = 0; i < 6; i++)
-	{
-		map[i] = malloc(6 * sizeof(int));
-		for (int j = 0; j < 6; j++)
-		{
-			map[i][j] = miniMap[j][i];
-		}
-	}
-	dda_test->map = map;
-	dda_test->map_width = 6;
-	dda_test->map_height = 6;
-	dda_test->x = 2;
-	dda_test->y = 4;
-	dda_test->dirX = 0.0;
-	dda_test->dirY = -1.0;
-	// calulate plane direction
-	dda_test->planeX = -dda_test->dirY * 3;
-	dda_test->planeY = dda_test->dirX * 3;
-}
+// 	// // miniMapをint**に変換
+// 	// map = malloc(6 * sizeof(int *));
+// 	// for (int i = 0; i < 6; i++)
+// 	// {
+// 	// 	map[i] = malloc(6 * sizeof(int));
+// 	// 	for (int j = 0; j < 6; j++)
+// 	// 	{
+// 	// 		map[i][j] = miniMap[j][i];
+// 	// 	}
+// 	// }
+// 	dda_test->map = map;
+// 	dda_test->map_width = 6;
+// 	dda_test->map_height = 6;
+// 	dda_test->x = 2;
+// 	dda_test->y = 4;
+// 	dda_test->dirX = 0.0;
+// 	dda_test->dirY = -1.0;
+// 	// calulate plane direction
+// 	dda_test->planeX = -dda_test->dirY * 3;
+// 	dda_test->planeY = dda_test->dirX * 3;
+// }
 
 void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
 {
@@ -133,43 +102,98 @@ void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
+void	dda_test_init(t_dda *dda_data, t_cub3d *cub3d)
+{
+	dda_data->step_x = 1;
+	dda_data->step_y = 1;
+	dda_data->delta_x = 0.5;
+	dda_data->delta_y = 0.5;
+	dda_data->side_dist_x = 0.0;
+	dda_data->side_dist_y = 0.0;
+	dda_data->map = cub3d->config->map;
+	dda_data->map_width = cub3d->config->columns;
+	dda_data->map_height = cub3d->config->rows;
+    dda_data->x = cub3d->player->x;
+    dda_data->y = cub3d->player->y;
+    dda_data->dirX = cub3d->player->dir_x;
+    dda_data->dirY = cub3d->player->dir_y;
+    dda_data->planeX = cub3d->player->plane_x;
+    dda_data->planeY = cub3d->player->plane_y;
+}
+
+void init_dda(t_dda *dda_data, t_cub3d *cub3d) {
+    dda_test_init(dda_data, cub3d);
+}
+
+void init_test_cub3d(t_cub3d *cub3d)
+{
+	char	**map;
+    
+	cub3d->player->x = 22.0;
+	cub3d->player->y = 12.0;
+	cub3d->player->dir_x = -1.0;
+	cub3d->player->dir_y = 0.0;
+	cub3d->player->plane_x = 0.0;
+	cub3d->player->plane_y = 0.66;
+    //
+    cub3d->config->rows = mapHeight;
+    cub3d->config->columns = mapWidth;
+    cub3d->config->ceiling_color = 0;
+    cub3d->config->floor_color = 0;
+	// worldmapをint**に変換
+	cub3d->config->map = malloc(mapHeight * sizeof(char *));
+	for (int i = 0; i < mapHeight; i++)
+	{
+		cub3d->config->map[i] = malloc(mapWidth * sizeof(char));
+		for (int j = 0; j < mapWidth; j++)
+		{
+			cub3d->config->map[i][j] = worldMap[j][i];
+		}
+	}
+    //
+	init_key_state(cub3d->key_state);
+}
+
 int	main(void)
 {
-	t_dda		dda_test;
-	t_img_data	img;
-	t_test		test_data;
-	void		*mlx;
-	void		*mlx_win;
-	t_key_state	key_state;
+	// t_dda		dda_test;
+	// t_test		test_data;
+	// void		*mlx;
+	// void		*mlx_win;
+	// t_key_state	key_state;
+    t_cub3d	cub3d;
 
-	dda_test_init(&dda_test);
+    cub3d.player = malloc(sizeof(t_player));
+    cub3d.config = malloc(sizeof(t_config));
+    cub3d.key_state = malloc(sizeof(t_key_state));
+    cub3d.img = malloc(sizeof(t_img_data));
+    init_test_cub3d(&cub3d);
+    //
+	// dda_test_init(&dda_test);
 	// dda_test_init_mini_map(&dda_test);
 	// Here you would typically call your DDA function and process the results.
 	// For this example, we will just print the initial values.
 	printf("DDA Test Initialized:\n");
-	printf("Position: (%lf, %lf)\n", dda_test.x, dda_test.y);
-	printf("Step: (%d, %d)\n", dda_test.step_x, dda_test.step_y);
-	printf("Delta: (%.2f, %.2f)\n", dda_test.delta_x, dda_test.delta_y);
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, windowWidth, windowHeight, "Hello world!");
-	test_data.dda_data = &dda_test;
-	test_data.mlx = mlx;
-	test_data.win = mlx_win;
-	test_data.img = &img;
-	init_key_state(&key_state);
-	test_data.key_state = &key_state;
-	mlx_key_hook(mlx_win, key_up, &test_data);
-	mlx_hook(mlx_win, 2, 1L << 0, key_down, &test_data);
-	mlx_hook(mlx_win, 17, 0, destroy_hook, &test_data);
-	mlx_loop_hook(mlx, render, &test_data);
-	img.img = mlx_new_image(mlx, windowWidth, windowHeight);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-			&img.endian);
+	printf("Position: (%lf, %lf)\n", cub3d.player->x, cub3d.player->y);
+	// printf("Step: (%d, %d)\n", dda_test.step_x, dda_test.step_y);
+	// printf("Delta: (%.2f, %.2f)\n", dda_test.delta_x, dda_test.delta_y);
+	cub3d.mlx = mlx_init();
+	cub3d.win = mlx_new_window(cub3d.mlx, windowWidth, windowHeight, "cub3d");
+	// test_data.dda_data = &dda_test;
+	// test_data.img = &img;
+	// test_data.key_state = &key_state;
+	mlx_key_hook(cub3d.win, key_up, &cub3d);
+	mlx_hook(cub3d.win, 2, 1L << 0, key_down, &cub3d);
+	mlx_hook(cub3d.win, 17, 0, destroy_hook, &cub3d);
+	mlx_loop_hook(cub3d.mlx, render, &cub3d);
+    cub3d.img->img = mlx_new_image(cub3d.mlx, windowWidth, windowHeight);
+	cub3d.img->addr = mlx_get_data_addr(cub3d.img->img, &cub3d.img->bits_per_pixel, &cub3d.img->line_length,
+			&cub3d.img->endian);
 	// my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
-	dda(&dda_test, &img);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	mlx_loop(mlx);
-	end_cub3d(&test_data);
+	dda(&cub3d);
+	mlx_put_image_to_window(cub3d.mlx, cub3d.win, cub3d.img->img, 0, 0);
+	mlx_loop(cub3d.mlx);
+	end_cub3d(&cub3d);
 	return (0);
 }
 

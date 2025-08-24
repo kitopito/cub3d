@@ -20,15 +20,13 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-typedef struct s_test
-{
-	t_dda		*dda_data;
-	void		*mlx;
-	void		*win;
-	t_img_data	*img;
-	t_key_state	*key_state;
-}				t_test;
-
-void			my_mlx_pixel_put(t_img_data *data, int x, int y, int color);
+// typedef struct s_test
+// {
+// 	t_dda		*dda_data;
+// 	void		*mlx;
+// 	void		*win;
+// 	t_img_data	*img;
+// 	t_key_state	*key_state;
+// }				t_test;
 
 #endif

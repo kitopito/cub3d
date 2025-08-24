@@ -41,6 +41,10 @@ typedef struct s_dda
 	int		map_height;
 }			t_dda;
 
-int			dda(t_dda *dda_data, t_img_data *img_data);
+int			dda(t_cub3d *cub3d);
+
+void init_dda(t_dda *dda_data, t_cub3d *cub3d);
+
+void			my_mlx_pixel_put(t_img_data *data, int x, int y, int color);
 
 #endif

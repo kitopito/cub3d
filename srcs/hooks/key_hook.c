@@ -14,10 +14,10 @@
 #include <stdio.h>
 #include "hooks.h"
 #include "../../cub3d.h"
-#include "../dda/dda_test.h"
 #include "../dda/dda.h"
+#include <mlx.h>
 
-int key_up(int keycode, t_test *data) {
+int key_up(int keycode, t_cub3d *data) {
     if (keycode == KEYCODE_ESC) {
         mlx_loop_end(data->mlx);
     }
@@ -43,7 +43,7 @@ int key_up(int keycode, t_test *data) {
     return 0;
 }
 
-int key_down(int keycode, t_test *data) {
+int key_down(int keycode, t_cub3d *data) {
     printf("Key pressed: %d\n", keycode);
     if (keycode == KEYCODE_W) {
         data->key_state->w = true;
@@ -67,55 +67,55 @@ int key_down(int keycode, t_test *data) {
     return 0;
 }
 
-int render(t_test *data) {
+int render(t_cub3d *data) {
     // printf("key state: W=%d, A=%d, S=%d, D=%d, LEFT=%d, RIGHT=%d\n",
     //        data->key_state->w, data->key_state->a, data->key_state->s,
     //        data->key_state->d, data->key_state->left, data->key_state->right);
     if (data->key_state->left) {
-        rotate_player(data->dda_data, ROTATION_ANGLE);
+        rotate_player(data->player, ROTATION_ANGLE);
     }
     if (data->key_state->right) {
-        rotate_player(data->dda_data, -ROTATION_ANGLE);
+        rotate_player(data->player, -ROTATION_ANGLE);
     }
     if (data->key_state->w) {
-        data->dda_data->x += data->dda_data->dirX * VELOCITY;
-        data->dda_data->y += data->dda_data->dirY * VELOCITY;
+        data->player->x += data->player->dir_x * VELOCITY;
+        data->player->y += data->player->dir_y * VELOCITY;
     }
     if (data->key_state->s) {
-        data->dda_data->x -= data->dda_data->dirX * VELOCITY;
-        data->dda_data->y -= data->dda_data->dirY * VELOCITY;
+        data->player->x -= data->player->dir_x * VELOCITY;
+        data->player->y -= data->player->dir_y * VELOCITY;
     }
     if (data->key_state->a) {
-        data->dda_data->x -= data->dda_data->dirY * VELOCITY;
-        data->dda_data->y += data->dda_data->dirX * VELOCITY;
+        data->player->x -= data->player->dir_y * VELOCITY;
+        data->player->y += data->player->dir_x * VELOCITY;
     }
     if (data->key_state->d) {
-        data->dda_data->x += data->dda_data->dirY * VELOCITY;
-        data->dda_data->y -= data->dda_data->dirX * VELOCITY;
+        data->player->x += data->player->dir_y * VELOCITY;
+        data->player->y -= data->player->dir_x * VELOCITY;
     }
-    dda(data->dda_data, data->img);
+    dda(data);
     mlx_put_image_to_window(data->mlx, data->win, data->img->img, 0, 0);
     return 0;
 }
 
-int destroy_hook(t_test *data) {
+int destroy_hook(t_cub3d *data) {
     mlx_loop_end(data->mlx);
     return 0;
 }
 
-void end_cub3d(t_test *data) {
+void end_cub3d(t_cub3d *data) {
 }
 
-void rotate_player(t_dda *dda_data, double angle) {
-    double oldDirX = dda_data->dirX;
-    double oldDirY = dda_data->dirY;
-    dda_data->dirX = oldDirX * cos(angle) - oldDirY * sin(angle);
-    dda_data->dirY = oldDirX * sin(angle) + oldDirY * cos(angle);
+void rotate_player(t_player *player, double angle) {
+    double oldDirX = player->dir_x;
+    double oldDirY = player->dir_y;
+    player->dir_x = oldDirX * cos(angle) - oldDirY * sin(angle);
+    player->dir_y = oldDirX * sin(angle) + oldDirY * cos(angle);
     
-    double oldPlaneX = dda_data->planeX;
-    double oldPlaneY = dda_data->planeY;
-    dda_data->planeX = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
-    dda_data->planeY = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
+    double oldPlaneX = player->plane_x;
+    double oldPlaneY = player->plane_y;
+    player->plane_x = oldPlaneX * cos(angle) - oldPlaneY * sin(angle);
+    player->plane_y = oldPlaneX * sin(angle) + oldPlaneY * cos(angle);
 }
 
 void init_key_state(t_key_state *state) {

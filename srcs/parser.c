@@ -33,6 +33,7 @@ static int count_lines(char *filepath)
 
 static void fill_map(t_data *data, char *filepath)
 {
+  // 
   int fd = open(filepath, O_RDONLY);
   int i = 0;
   char *line;

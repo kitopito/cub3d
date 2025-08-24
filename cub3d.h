@@ -13,8 +13,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "hooks/hooks.h"
-# include "hooks/key_state.h"
+# include "srcs/hooks/key_state.h"
 # include "libft/libft.h"
 # include <fcntl.h>
 # include <stdio.h>

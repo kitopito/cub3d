@@ -28,7 +28,7 @@ void	fill_img(t_img_data *img_data, int color)
 	}
 }
 
-int	dda(t_dda *dda_data, t_img_data *img_data)
+int	dda(t_cub3d *cub3d)
 {
 	int			i;
 	double		ray_length;
@@ -42,8 +42,12 @@ int	dda(t_dda *dda_data, t_img_data *img_data)
 	int			draw_start;
 	int			k;
 	int			color;
+	t_dda		*dda_data;
+	void *img_data = cub3d->img;
 
-	fill_img(img_data, 0x000000);
+	dda_data = malloc(sizeof(t_dda));
+	init_dda(dda_data, cub3d);
+	fill_img(cub3d->img, 0x000000);
 	i = 0;
 	while (i < windowWidth)
 	{
@@ -84,16 +88,15 @@ int	dda(t_dda *dda_data, t_img_data *img_data)
 		}
 		// printf("Ray direction: (%lf, %lf)\n", ray_dir.x, ray_dir.y);
 		// printf("Delta distances: X = %lf, Y = %lf\n", dda_data->delta_x,
-			dda_data->delta_y);
+			// dda_data->delta_y);
 			// printf("Initial side distances: X = %lf, Y = %lf\n",
-			dda_data->side_dist_x, dda_data->side_dist_y);
+			// dda_data->side_dist_x, dda_data->side_dist_y);
 			side = -1;
 			while (1)
 			{
 				// printf("Current map position: (%d, %d)\n", mapX, mapY);
 				// printf("Side distances: X = %f, Y = %f\n",
-					dda_data->side_dist_x,
-				dda_data->side_dist_y);
+				// dda_data->side_dist_x, dda_data->side_dist_y);
 					if (dda_data->side_dist_x < dda_data->side_dist_y)
 					{
 						dda_data->side_dist_x += dda_data->delta_x;
@@ -133,7 +136,7 @@ int	dda(t_dda *dda_data, t_img_data *img_data)
 					color = (side == 0) ? 0xFF0000 : 0x00FF00;
 					my_mlx_pixel_put(img_data, i, k, color);
 					// printf("Pixel at (%d, %d) with color %06X\n", i, k,
-						color);
+					// color);
 				}
 				k++;
 			}

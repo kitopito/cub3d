@@ -12,13 +12,14 @@ int main(int ac, char **av)
   }
   init_data(&data);
   parse_map(&data, av[1]);
-
   // マップ表示（テスト用）
-  while (data.map[i])
-  {
-    printf("%s\n", data.map[i]);
-    i++;
-  }
+	print_parsed(&data);
+	i = 0;
+	while (data.map[i])
+	{
+		printf("%s\n", data.map[i]);
+		i++;
+	}
 
   free_map(data.map);
   return (EXIT_SUCCESS);

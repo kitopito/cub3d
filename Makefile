@@ -14,9 +14,14 @@ OBJS := $(SRCS:.c=.o)
 
 LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
-LIBS := -lreadline -lm -lXext -lX11 -lz
+# LIBS := -lreadline -lm -lXext -lX11 -lz
 
-MINILIBX = minilibx-linux/libmlx.a
+
+# いまは MLX なしでビルドするので LIBS は空からスタート
+LIBS :=
+LDFLAGS :=
+
+# MINILIBX = minilibx-linux/libmlx.a
 
 # macOS向けreadline対応
 ifeq ($(shell uname), Darwin)
@@ -29,8 +34,12 @@ MAKE_LIBFT = $(MAKE) -C $(LIBFT_DIR)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MINILIBX) $(LIBFT)
-	$(CC) -v $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME) 
+# $(NAME): $(OBJS) $(MINILIBX) $(LIBFT)
+# 	$(CC) -v $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME) 
+
+# MLX は一旦外す：$(MINILIBX) を依存に入れない
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LIBS) $(LDFLAGS) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE_LIBFT)

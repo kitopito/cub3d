@@ -20,17 +20,21 @@ typedef struct s_data
 	char	  start_dir;
 }   t_data;
 
-// prototypes
+// init.c
 void    init_data(t_data *data);
-void    parse_map(t_data *data, char *filepath);
-void    free_map(char **map);
 
-//⇩REF前
+// parser.c
+void	parse_map(t_data *data, char *filepath);
 int		set_metadata(t_data *data, char **lines, int line_count, int *map_start);
 void	set_map_from(t_data *data, char **lines, int start, int count);
-int		parse_player_and_normalize(t_data *data);
+char	**read_all_lines(char *path, int *out_n);
 
-//main.c
+// main.c
 void    print_parsed(t_data *data);
 
+// utils.c
+void    free_map(char **map);
+char    *skip_ws(char *s);
+char    *dup_after_key(char *line, int skip);
+void    split_free(char **sp);
 #endif

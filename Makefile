@@ -16,7 +16,6 @@ LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
 # LIBS := -lreadline -lm -lXext -lX11 -lz
 
-
 # いまは MLX なしでビルドするので LIBS は空からスタート
 LIBS :=
 LDFLAGS :=

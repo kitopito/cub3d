@@ -16,7 +16,8 @@ LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
 LIBS := -lreadline -lm -lXext -lX11 -lz
 
-MINILIBX = minilibx-linux/libmlx.a
+MLX_DIR = minilibx-linux
+MINILIBX = $(MLX_DIR)/libmlx.a
 
 # macOS向けreadline対応
 ifeq ($(shell uname), Darwin)
@@ -35,16 +36,24 @@ $(NAME): $(OBJS) $(MINILIBX) $(LIBFT)
 $(LIBFT):
 	$(MAKE_LIBFT)
 
+$(MINILIBX):
+	if [ ! -d $(MLX_DIR) ]; then \
+			git clone https://github.com/42Paris/minilibx-linux.git; \
+	fi
+	make -C minilibx-linux
+
 %.o: %.c
 	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@ $(INCLUDES)
 
 clean:
 	rm -f $(OBJS)
 	$(MAKE_LIBFT) clean
+	make -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE_LIBFT) fclean
+	make -C $(MLX_DIR) fclean
 
 re: fclean all
 

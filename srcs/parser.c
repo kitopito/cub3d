@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/11 19:14:51 by ywada             #+#    #+#             */
+/*   Updated: 2025/08/11 19:15:51 by ywada            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub3d.h"
 
 static int count_lines(char *filepath)
@@ -21,6 +33,7 @@ static int count_lines(char *filepath)
 
 static void fill_map(t_data *data, char *filepath)
 {
+  // 
   int fd = open(filepath, O_RDONLY);
   int i = 0;
   char *line;

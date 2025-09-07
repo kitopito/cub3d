@@ -64,21 +64,6 @@ char	**read_all_lines(char *path, int *out_n)
 	return (arr);
 }
 
-void	free_map(char **map)
-{
-	int	i;
-
-	if (!map)
-		return ;
-	i = 0;
-	while (map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
-
 char	*skip_ws(char *s)
 {
 	while (*s == ' ' || *s == '\t')

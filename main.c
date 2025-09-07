@@ -13,7 +13,7 @@ int main(int ac, char **av)
   init_data(&data);
   parse_map(&data, av[1]);
   // マップ表示（テスト用）
-	print_parsed(&data);
+	// print_parsed(&data);
 	i = 0;
 	while (data.map[i])
 	{

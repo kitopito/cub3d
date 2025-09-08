@@ -46,5 +46,8 @@ int			dda(t_cub3d *cub3d);
 void init_dda(t_dda *dda_data, t_cub3d *cub3d);
 
 void			my_mlx_pixel_put(t_img_data *data, int x, int y, int color);
+int	mlx_pixel_get(t_img_data *data, int x, int y);
+
+t_img_data	*load_texture(void *mlx, char *filename);
 
 #endif

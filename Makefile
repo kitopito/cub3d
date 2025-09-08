@@ -14,15 +14,18 @@ OBJS := $(SRCS:.c=.o)
 
 LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
-LIBS := -lreadline -lm -lXext -lX11 -lz
 
-MINILIBX = minilibx-linux/libmlx.a
+MLX_DIR   = minilibx-linux
+MINILIBX  = $(MLX_DIR)/libmlx.a
 
-# macOS向けreadline対応
-ifeq ($(shell uname), Darwin)
-	READLINE_DIR := $(shell brew --prefix readline)
-	CFLAGS += -I$(READLINE_DIR)/include
-	LDFLAGS += -L$(READLINE_DIR)/lib
+CFLAGS  += -I$(MLX_DIR)
+LDFLAGS += -L$(MLX_DIR)
+LIBS    := -lmlx -lXext -lX11 -lm -lz
+
+ifeq ($(shell uname -s),Darwin)
+X11_DIR := /opt/X11
+CFLAGS  += -I$(X11_DIR)/include
+LDFLAGS += -L$(X11_DIR)/lib
 endif
 
 MAKE_LIBFT = $(MAKE) -C $(LIBFT_DIR)
@@ -30,10 +33,16 @@ MAKE_LIBFT = $(MAKE) -C $(LIBFT_DIR)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(MINILIBX) $(LIBFT)
-	$(CC) -v $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME) 
+	$(CC) -v $(CFLAGS) $(DEBUG) $(OBJS) $(LIBFT) $(LDFLAGS) $(LIBS) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE_LIBFT)
+
+$(MINILIBX):
+	@if [ ! -d $(MLX_DIR) ]; then \
+		git clone https://github.com/42Paris/minilibx-linux.git; \
+	fi
+	$(MAKE) -C $(MLX_DIR)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@ $(INCLUDES)
@@ -41,10 +50,12 @@ $(LIBFT):
 clean:
 	rm -f $(OBJS)
 	$(MAKE_LIBFT) clean
+	$(MAKE) -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE_LIBFT) fclean
+	$(MAKE) -C $(MLX_DIR) fclean
 
 re: fclean all
 

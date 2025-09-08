@@ -1,3 +1,11 @@
+NO path_to_north.xpm
+SO path_to_south.xpm
+WE path_to_west.xpm
+EA path_to_east.xpm
+
+F 120,120,120
+C 200,220,255
+
 11111111
 1S000001
 10000001

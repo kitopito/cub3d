@@ -90,6 +90,9 @@ void	set_map_from(t_config *cfg, char **lines, int start, int count);
 // debug.c
 void	print_parsed(const t_config *cfg);
 
+//check.c
+int		check_components(const t_config *cfg);
+
 // utils.c
 void    free_map(char **map);
 char    *skip_ws(char *s);

@@ -5,7 +5,7 @@ NAME = cub3d
 
 SRC_DIR := srcs
 SRCS_MAIN := main.c
-SRCS_UTILS := $(addprefix $(SRC_DIR)/, init.c parser.c utils.c debug.c)
+SRCS_UTILS := $(addprefix $(SRC_DIR)/, init.c parser.c utils.c debug.c check.c)
 SRCS := $(SRCS_MAIN) $(SRCS_UTILS)
 OBJS := $(SRCS:.c=.o)
 
@@ -27,7 +27,7 @@ endif
 
 MAKE_LIBFT = $(MAKE) -C $(LIBFT_DIR)
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test test-valid test-invalid
 
 all: $(NAME)
 
@@ -55,3 +55,27 @@ fclean:
 	-$(MAKE) -C $(MLX_DIR) fclean || $(MAKE) -C $(MLX_DIR) clean
 
 re: fclean all
+
+test: $(NAME) test-valid test-invalid
+
+test-valid: $(NAME)
+	@bash -lc 'shopt -s nullglob; failed=0; \
+	for f in map/valid/*.cub; do \
+	  if ./$(NAME) "$$f" >/dev/null 2>&1; then \
+	    echo "OK(valid): $$f"; \
+	  else \
+	    echo "NG(valid): $$f"; failed=1; \
+	  fi; \
+	done; \
+	exit $$failed'
+
+test-invalid: $(NAME)
+	@bash -lc 'shopt -s nullglob; failed=0; \
+	for f in map/invalid/*.cub; do \
+	  if ./$(NAME) "$$f" >/dev/null 2>&1; then \
+	    echo "NG(invalid passed): $$f"; failed=1; \
+	  else \
+	    echo "OK(invalid): $$f"; \
+	  fi; \
+	done; \
+	exit $$failed'

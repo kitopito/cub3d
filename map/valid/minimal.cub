@@ -1,0 +1,10 @@
+NO ./textures/brick.xpm
+SO ./textures/eagle.xpm
+WE ./textures/stone.xpm
+EA ./textures/wood.xpm
+F 0,0,0
+C 255,255,255
+
+111
+1N1
+111

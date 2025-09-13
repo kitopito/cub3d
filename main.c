@@ -12,6 +12,8 @@ int main(int ac, char **av)
 	}
 	init_config(&cfg);
 	parse_map(&cfg, av[1]);
+	if (!check_components(&cfg))
+		return (EXIT_FAILURE);
 	//マップの表示
 	print_parsed(&cfg);
 	i = 0;

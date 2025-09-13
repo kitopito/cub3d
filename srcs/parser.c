@@ -98,13 +98,15 @@ void	set_map_from(t_config *cfg, char **lines, int start, int count)
 	cfg->columns = (cnt > 0) ? (int)ft_strlen(cfg->map[0]) : 0;
 }
 
-static int	find_player_start(t_config *cfg)
+int	find_player_start(t_config *cfg)
 {
 	int		y;
 	int		x;
+	int		count;
 	char	*row;
 
 	y = 0;
+	count = 0;
 	while (cfg->map && cfg->map[y])
 	{
 		row = cfg->map[y];
@@ -113,17 +115,21 @@ static int	find_player_start(t_config *cfg)
 		{
 			if (ft_strchr("NSEW", row[x]))
 			{
-				cfg->start_x = x;
-				cfg->start_y = y;
-				cfg->start_direction = row[x];
+				if (count == 0)
+				{
+					cfg->start_x = x;
+					cfg->start_y = y;
+					cfg->start_direction = row[x];
+				}
+				count++;
 				row[x] = '0';
-				return (1);
 			}
 			x++;
 		}
 		y++;
 	}
-	return (0);
+	cfg->player_count = count;
+	return (count == 1);
 }
 
 void	parse_map(t_config *cfg, char *filepath)

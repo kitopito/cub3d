@@ -19,12 +19,14 @@ static int has_allowed_chars(const t_config *cfg)
 	int y;
 	int x;
 	char c;
+	int len;
 
 	y = 0;
 	while (y < cfg->rows)
 	{
+		len = (int)ft_strlen(cfg->map[y]);
 		x = 0;
-		while (cfg->map[y][x])
+		while (x < len)
 		{
 			c = cfg->map[y][x];
 			if (!(c == '0' || c == '1' || c == ' '))
@@ -39,20 +41,24 @@ static int has_allowed_chars(const t_config *cfg)
 static int no_zero_on_border(const t_config *cfg)
 {
 	int x;
+	int len_top;
+	int len_bot;
 	int y;
 	int len;
 
-	len = (int)ft_strlen(cfg->map[0]);
+	if (cfg->rows == 0)
+		return (0);
+	len_top = (int)ft_strlen(cfg->map[0]);
 	x = 0;
-	while (x < len)
+	while (x < len_top)
 	{
 		if (cfg->map[0][x] == '0')
 			return (0);
 		x++;
 	}
-	len = (int)ft_strlen(cfg->map[cfg->rows - 1]);
+	len_bot = (int)ft_strlen(cfg->map[cfg->rows - 1]);
 	x = 0;
-	while (x < len)
+	while (x < len_bot)
 	{
 		if (cfg->map[cfg->rows - 1][x] == '0')
 			return (0);
@@ -62,8 +68,13 @@ static int no_zero_on_border(const t_config *cfg)
 	while (y < cfg->rows)
 	{
 		len = (int)ft_strlen(cfg->map[y]);
-		if (len > 0 && (cfg->map[y][0] == '0' || cfg->map[y][len - 1] == '0'))
-			return (0);
+		if (len > 0)
+		{
+			if (cfg->map[y][0] == '0')
+				return (0);
+			if (cfg->map[y][len - 1] == '0')
+				return (0);
+		}
 		y++;
 	}
 	return (1);
@@ -92,8 +103,8 @@ static int closed_by_walls(const t_config *cfg)
 				len_dn = (int)ft_strlen(cfg->map[y + 1]);
 				if (x >= len_up || x >= len_dn)
 					return (0);
-				if (cfg->map[y - 1][x] == ' ' || cfg->map[y + 1][x] == ' ' ||
-					cfg->map[y][x - 1] == ' ' || cfg->map[y][x + 1] == ' ')
+				if (cfg->map[y - 1][x] == ' ' || cfg->map[y + 1][x] == ' '
+					|| cfg->map[y][x - 1] == ' ' || cfg->map[y][x + 1] == ' ')
 					return (0);
 			}
 			x++;
@@ -124,16 +135,15 @@ int	check_components(const t_config *cfg)
 			return (ft_putendl_fd("Error: texture missing", 2), 0);
 		i++;
 	}
-	if (!in_range_rgb(cfg->floor_rgb) || !in_range_rgb(cfg->ceiling_rgb))
-		return (ft_putendl_fd("Error: invalid color", 2), 0);
-	if (!(cfg->start_direction == 'N' || cfg->start_direction == 'S'
-		|| cfg->start_direction == 'E' || cfg->start_direction == 'W'))
+	if (cfg->player_count != 1)
 		return (ft_putendl_fd("Error: invalid player", 2), 0);
 	if (cfg->start_y < 0 || cfg->start_y >= cfg->rows)
 		return (ft_putendl_fd("Error: invalid player", 2), 0);
 	len_row = (int)ft_strlen(cfg->map[cfg->start_y]);
 	if (cfg->start_x < 0 || cfg->start_x >= len_row)
 		return (ft_putendl_fd("Error: invalid player", 2), 0);
+	if (!in_range_rgb(cfg->floor_rgb) || !in_range_rgb(cfg->ceiling_rgb))
+		return (ft_putendl_fd("Error: invalid color", 2), 0);
 	if (!has_allowed_chars(cfg))
 		return (ft_putendl_fd("Error: invalid map", 2), 0);
 	if (!no_zero_on_border(cfg))

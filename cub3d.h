@@ -55,6 +55,7 @@ typedef struct s_config
 	char		start_direction;
 	int			floor_color;
 	int			ceiling_color;
+	int     player_count;
 }				t_config;
 
 typedef struct s_player
@@ -85,6 +86,7 @@ void	init_config(t_config *cfg);
 void	parse_map(t_config *cfg, char *filepath);
 int		set_metadata(t_config *cfg, char **lines, int line_count, int *map_start);
 void	set_map_from(t_config *cfg, char **lines, int start, int count);
+int		find_player_start(t_config *cfg);
 
 
 // debug.c

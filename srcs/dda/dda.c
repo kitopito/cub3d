@@ -12,13 +12,20 @@
 
 #include "../cub3d.h"
 #include "dda.h"
-#include "dda_test.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #define SIDE_X 0
 #define SIDE_Y 1
+
+void	my_mlx_pixel_put(t_img_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
+}
 
 void	fill_img(t_img_data *img_data, int color)
 {
@@ -34,7 +41,7 @@ void	fill_img(t_img_data *img_data, int color)
 int	dda(t_cub3d *cub3d)
 {
 	int			i;
-	double		ray_length;
+	// double		ray_length;
 	t_vector	ray_dir;
 	double		camera_x;
 	int			mapX;
@@ -114,8 +121,9 @@ int	dda(t_cub3d *cub3d)
 						side = SIDE_Y;
 					}
 					// printf("Updated map position: (%d, %d)\n", mapX, mapY);
-					if (dda_data->map[mapY][mapX] > 0)
+					if (dda_data->map[mapY][mapX] > '0')
 					{
+						// printf("Hit wall at (%d, %d) %c\n", mapX, mapY, dda_data->map[mapY][mapX]);
 						break ;
 					}
 			}
@@ -150,11 +158,14 @@ int	dda(t_cub3d *cub3d)
 			double tex_pos = 0.0;
 			//
 			h = windowHeight;
+			if (perp_wall_dist == 0)
+				perp_wall_dist = 0.0000000000001;
 			line_height = (int)(h / perp_wall_dist);
 			draw_start = h / 2 - line_height / 2;
 			k = 0;
 			while (k < draw_start)
 			{
+				// printf("ほげw%d\n", k);
 				if (k < windowHeight)
 					my_mlx_pixel_put(img_data, i, k, cub3d->config->ceiling_color);
 				k++;
@@ -180,6 +191,7 @@ int	dda(t_cub3d *cub3d)
 			}
 			i++;
 	}
+	return 0;
 }
 
 void	set_dda_data(t_dda *dda_data, t_cub3d *cub3d)

@@ -104,6 +104,8 @@ int destroy_hook(t_cub3d *data) {
 }
 
 void end_cub3d(t_cub3d *data) {
+    //
+    (void)data;
 }
 
 void rotate_player(t_player *player, double angle) {

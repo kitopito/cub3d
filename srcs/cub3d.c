@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+#include <mlx.h>
+#include "hooks/hooks.h"
 
 void	init_cub3d(t_cub3d *cub3d)
 {
@@ -34,6 +36,7 @@ t_config	*new_config(void)
 	config->west_texture = NULL;
 	config->east_texture = NULL;
 	config->map = NULL;
+	init_config(config);
 	return (config);
 }
 
@@ -59,7 +62,7 @@ t_config	*new_config(void)
 
 void	set_cub3d(t_cub3d *cub3d, char *filepath)
 {
-	init_cub3d(cub3d);
+	// init_cub3d(cub3d);
 	cub3d->mlx = mlx_init();
 	cub3d->win = mlx_new_window(cub3d->mlx, windowWidth, windowHeight, "cub3d");
 	cub3d->config = new_config();
@@ -76,7 +79,8 @@ void	set_cub3d(t_cub3d *cub3d, char *filepath)
 	}
 	init_key_state(cub3d->key_state);
 	// set_config(cub3d, filepath);
-	if (parse_map(cub3d, filepath) < 0)
+	parse_map(cub3d->config, filepath);
+	if (check_components(cub3d->config) == 0)
 	{
 		// in parse_map  check_map*(), load_textures() are called
 		free_cub3d(cub3d);

@@ -12,13 +12,8 @@ OBJS := $(SRCS:.c=.o)
 LIBFT_DIR := libft
 LIBFT := $(LIBFT_DIR)/libft.a
 
-<<<<<<< HEAD
-MLX_DIR = minilibx-linux
-MINILIBX = $(MLX_DIR)/libmlx.a
-=======
 MLX_DIR := minilibx-linux
 MINILIBX := $(MLX_DIR)/libmlx.a
->>>>>>> origin/main
 
 CFLAGS += -I$(MLX_DIR)
 LDFLAGS += -L$(MLX_DIR)

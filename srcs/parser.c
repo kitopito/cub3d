@@ -28,39 +28,40 @@ static int	parse_rgb(char *s, int out[3])
 	return (split_free(sp), 1);
 }
 
-static int	handle_meta_line(t_data *d, char *ln)
+static int	handle_meta_line(t_config *cfg, char *ln)
 {
 	char	*p;
 
 	p = skip_ws(ln);
 	if (*p == '\0')
 		return (0);
-	if (!d->texture_paths[0] && ft_strncmp(p, "NO ", 3) == 0)
-		return ((d->texture_paths[0] = ft_strtrim(skip_ws(p + 3), " \t")) != NULL);
-	if (!d->texture_paths[1] && ft_strncmp(p, "SO ", 3) == 0)
-		return ((d->texture_paths[1] = ft_strtrim(skip_ws(p + 3), " \t")) != NULL);
-	if (!d->texture_paths[2] && ft_strncmp(p, "WE ", 3) == 0)
-		return ((d->texture_paths[2] = ft_strtrim(skip_ws(p + 3), " \t")) != NULL);
-	if (!d->texture_paths[3] && ft_strncmp(p, "EA ", 3) == 0)
-		return ((d->texture_paths[3] = ft_strtrim(skip_ws(p + 3), " \t")) != NULL);
+	if (!cfg->texture_path[TEX_NO] && ft_strncmp(p, "NO ", 3) == 0)
+		return ((cfg->texture_path[TEX_NO] = ft_strtrim(skip_ws(p + 3), " \t")) != NULL);
+	if (!cfg->texture_path[TEX_SO] && ft_strncmp(p, "SO ", 3) == 0)
+		return ((cfg->texture_path[TEX_SO] = ft_strtrim(skip_ws(p + 3), " \t")) != NULL);
+	if (!cfg->texture_path[TEX_WE] && ft_strncmp(p, "WE ", 3) == 0)
+		return ((cfg->texture_path[TEX_WE] = ft_strtrim(skip_ws(p + 3), " \t")) != NULL);
+	if (!cfg->texture_path[TEX_EA] && ft_strncmp(p, "EA ", 3) == 0)
+		return ((cfg->texture_path[TEX_EA] = ft_strtrim(skip_ws(p + 3), " \t")) != NULL);
 	if (ft_strncmp(p, "F ", 2) == 0)
-		return (parse_rgb(p + 2, d->floor_rgb));
+		return (parse_rgb(p + 2, cfg->floor_rgb));
 	if (ft_strncmp(p, "C ", 2) == 0)
-		return (parse_rgb(p + 2, d->ceiling_rgb));
+		return (parse_rgb(p + 2, cfg->ceiling_rgb));
 	return (-1);
 }
 
-int	set_metadata(t_data *d, char **lines, int n, int *map_start)
+int	set_metadata(t_config *cfg, char **lines, int line_count, int *map_start)
 {
 	int	i;
 	int	got;
 	int	r;
 
+	(void)cfg;
 	i = 0;
 	got = 0;
-	while (i < n)
+	while (i < line_count)
 	{
-		r = handle_meta_line(d, lines[i]);
+		r = handle_meta_line(cfg, lines[i]);
 		if (r == 1)
 			got++;
 		else if (r == -1)
@@ -71,84 +72,88 @@ int	set_metadata(t_data *d, char **lines, int n, int *map_start)
 	return (got == 6);
 }
 
-void	set_map_from(t_data *d, char **lines, int start, int n)
+void	set_map_from(t_config *cfg, char **lines, int start, int count)
 {
 	int	i;
 	int	cnt;
 
 	i = start;
 	cnt = 0;
-	while (i < n && lines[i] && lines[i][0] != '\0')
+	while (i < count && lines[i] && lines[i][0] != '\0')
 	{
 		cnt++;
 		i++;
 	}
-	d->map = (char **)malloc(sizeof(char *) * (cnt + 1));
-	if (!d->map)
+	cfg->map = (char **)malloc(sizeof(char *) * (cnt + 1));
+	if (!cfg->map)
 		return ;
-	d->rows = cnt;
+	cfg->rows = cnt;
 	i = 0;
 	while (i < cnt)
 	{
-		d->map[i] = ft_strdup(lines[start + i]);
+		cfg->map[i] = ft_strdup(lines[start + i]);
 		i++;
 	}
-	d->map[i] = NULL;
-	d->columns = (cnt > 0) ? (int)ft_strlen(d->map[0]) : 0;
+	cfg->map[i] = NULL;
+	cfg->columns = (cnt > 0) ? (int)ft_strlen(cfg->map[0]) : 0;
 }
 
-int	find_player_start(t_data *d)
+int	find_player_start(t_config *cfg)
 {
 	int		y;
 	int		x;
+	int		count;
 	char	*row;
 
 	y = 0;
-	while (d->map && d->map[y])
+	count = 0;
+	while (cfg->map && cfg->map[y])
 	{
-		row = d->map[y];
+		row = cfg->map[y];
 		x = 0;
 		while (row[x])
 		{
 			if (ft_strchr("NSEW", row[x]))
 			{
-				d->start_x = x;
-				d->start_y = y;
-				d->start_dir = row[x];
+				if (count == 0)
+				{
+					cfg->start_x = x;
+					cfg->start_y = y;
+					cfg->start_direction = row[x];
+				}
+				count++;
 				row[x] = '0';
-				return (1);
 			}
 			x++;
 		}
 		y++;
 	}
-	return (0);
+	cfg->player_count = count;
+	return (count == 1);
 }
 
-void	parse_map(t_data *d, char *path)
+void	parse_map(t_config *cfg, char *filepath)
 {
 	int		n;
 	int		map_start;
 	int		i;
 	char	**file;
 
-	file = read_all_lines(path, &n);
+	file = read_all_lines(filepath, &n);
 	if (!file || n <= 0)
 	{
 		perror("invalid or empty map file");
 		exit(EXIT_FAILURE);
 	}
-	d->texture_paths[0] = NULL;
-	d->texture_paths[1] = NULL;
-	d->texture_paths[2] = NULL;
-	d->texture_paths[3] = NULL;
-	if (!set_metadata(d, file, n, &map_start))
+	if (!set_metadata(cfg, file, n, &map_start))
 	{
 		perror("metadata parse error");
 		exit(EXIT_FAILURE);
 	}
-	set_map_from(d, file, map_start, n);
-	(void)find_player_start(d);
+	set_map_from(cfg, file, map_start, n);
+	(void)find_player_start(cfg);
+	cfg->floor_color = (cfg->floor_rgb[0] << 16) | (cfg->floor_rgb[1] << 8) | cfg->floor_rgb[2];
+	cfg->ceiling_color = (cfg->ceiling_rgb[0] << 16) | (cfg->ceiling_rgb[1] << 8) | cfg->ceiling_rgb[2];
 	i = 0;
 	while (i < n)
 		free(file[i++]);

@@ -17,6 +17,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define SIDE_X 0
+#define SIDE_Y 1
+
 void	fill_img(t_img_data *img_data, int color)
 {
 	for (int y = 0; y < windowHeight; y++)
@@ -46,8 +49,9 @@ int	dda(t_cub3d *cub3d)
 	void *img_data = cub3d->img;
 
 	dda_data = malloc(sizeof(t_dda));
+	// error 
 	init_dda(dda_data, cub3d);
-	fill_img(cub3d->img, 0x000000);
+	//fill_img(cub3d->img, 0x000000);
 	i = 0;
 	while (i < windowWidth)
 	{
@@ -101,13 +105,13 @@ int	dda(t_cub3d *cub3d)
 					{
 						dda_data->side_dist_x += dda_data->delta_x;
 						mapX += dda_data->step_x;
-						side = 0;
+						side = SIDE_X;
 					}
 					else
 					{
 						dda_data->side_dist_y += dda_data->delta_y;
 						mapY += dda_data->step_y;
-						side = 1;
+						side = SIDE_Y;
 					}
 					// printf("Updated map position: (%d, %d)\n", mapX, mapY);
 					if (dda_data->map[mapY][mapX] > 0)
@@ -116,28 +120,62 @@ int	dda(t_cub3d *cub3d)
 					}
 			}
 			// printf("Map hit at (%d, %d) with side %d\n", mapX, mapY, side);
-			h = windowHeight;
-			if (side == 0)
-			{
-				line_height = (int)(h / (dda_data->side_dist_x
-							- dda_data->delta_x));
-			}
+			double perp_wall_dist;
+			if (side == SIDE_X)
+				perp_wall_dist = dda_data->side_dist_x - dda_data->delta_x;
 			else
-			{
-				line_height = (int)(h / (dda_data->side_dist_y
-							- dda_data->delta_y));
-			}
+				perp_wall_dist = dda_data->side_dist_y - dda_data->delta_y;
+			//
+			t_img_data *texture;
+			if (side == SIDE_X && ray_dir.x > 0)
+				texture = cub3d->config->east_texture;
+			else if (side == SIDE_X && ray_dir.x < 0)
+				texture = cub3d->config->west_texture;
+			else if (side == SIDE_Y && ray_dir.y > 0)
+				texture = cub3d->config->south_texture;
+			else
+				texture = cub3d->config->north_texture;
+			//
+			double wall_x;
+			if (side == SIDE_X)
+				wall_x = dda_data->y + perp_wall_dist * ray_dir.y;
+			else
+				wall_x = dda_data->x + perp_wall_dist * ray_dir.x;
+			wall_x -= floor(wall_x);
+			int tex_x = (int)(wall_x * texture->width); // width - 1にする？
+			if ((side == SIDE_X && ray_dir.x > 0) || (side == SIDE_Y && ray_dir.y < 0))
+				tex_x = texture->width - tex_x - 1;
+			//
+			double tex_step = (double)texture->height / line_height;
+			double tex_pos = 0.0;
+			//
+			h = windowHeight;
+			line_height = (int)(h / perp_wall_dist);
 			draw_start = h / 2 - line_height / 2;
+			k = 0;
+			while (k < draw_start)
+			{
+				if (k < windowHeight)
+					my_mlx_pixel_put(img_data, i, k, cub3d->config->ceiling_color);
+				k++;
+			}
 			k = draw_start;
 			while (k < draw_start + line_height)
 			{
 				if (k >= 0 && k < windowHeight)
 				{
-					color = (side == 0) ? 0xFF0000 : 0x00FF00;
+					int tex_y = floor(tex_pos);
+					color = mlx_pixel_get(texture, tex_x, tex_y);
 					my_mlx_pixel_put(img_data, i, k, color);
 					// printf("Pixel at (%d, %d) with color %06X\n", i, k,
 					// color);
 				}
+				tex_pos += tex_step;
+				k++;
+			}
+			while (k < windowHeight)
+			{
+				my_mlx_pixel_put(img_data, i, k, cub3d->config->floor_color);
 				k++;
 			}
 			i++;

@@ -129,6 +129,9 @@ void init_test_cub3d(t_cub3d *cub3d)
 {
 	char	**map;
     
+	cub3d->mlx = mlx_init();
+	cub3d->win = mlx_new_window(cub3d->mlx, windowWidth, windowHeight, "cub3d");
+	//
 	cub3d->player->x = 22.0;
 	cub3d->player->y = 12.0;
 	cub3d->player->dir_x = -1.0;
@@ -138,8 +141,8 @@ void init_test_cub3d(t_cub3d *cub3d)
     //
     cub3d->config->rows = mapHeight;
     cub3d->config->columns = mapWidth;
-    cub3d->config->ceiling_color = 0;
-    cub3d->config->floor_color = 0;
+    cub3d->config->ceiling_color = 0x87CEEB; // Sky blue color
+    cub3d->config->floor_color = 0x550000; // Dark brown color
 	// worldmapをint**に変換
 	cub3d->config->map = malloc(mapHeight * sizeof(char *));
 	for (int i = 0; i < mapHeight; i++)
@@ -150,6 +153,11 @@ void init_test_cub3d(t_cub3d *cub3d)
 			cub3d->config->map[i][j] = worldMap[j][i];
 		}
 	}
+	cub3d->config->east_texture = load_texture(cub3d->mlx, "../../texture/animal_chara_radio_azarashi.xpm");
+	cub3d->config->west_texture = load_texture(cub3d->mlx, "../../texture/building_kokuzeikyoku.xpm");
+	//cub3d->config->west_texture = load_texture(cub3d->mlx, "../../texture/kanban_nature_chouju_hogoku.xpm");
+	cub3d->config->south_texture = load_texture(cub3d->mlx, "../../texture/building_takoyaki_yatai.xpm");
+	cub3d->config->north_texture = load_texture(cub3d->mlx, "../../texture/onepiece06_chopper.xpm");
     //
 	init_key_state(cub3d->key_state);
 }
@@ -177,8 +185,6 @@ int	main(void)
 	printf("Position: (%lf, %lf)\n", cub3d.player->x, cub3d.player->y);
 	// printf("Step: (%d, %d)\n", dda_test.step_x, dda_test.step_y);
 	// printf("Delta: (%.2f, %.2f)\n", dda_test.delta_x, dda_test.delta_y);
-	cub3d.mlx = mlx_init();
-	cub3d.win = mlx_new_window(cub3d.mlx, windowWidth, windowHeight, "cub3d");
 	// test_data.dda_data = &dda_test;
 	// test_data.img = &img;
 	// test_data.key_state = &key_state;

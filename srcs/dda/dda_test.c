@@ -153,11 +153,11 @@ void init_test_cub3d(t_cub3d *cub3d)
 			cub3d->config->map[i][j] = worldMap[j][i];
 		}
 	}
-	cub3d->config->east_texture = load_texture(cub3d->mlx, "../../texture/animal_chara_radio_azarashi.xpm");
-	cub3d->config->west_texture = load_texture(cub3d->mlx, "../../texture/building_kokuzeikyoku.xpm");
-	//cub3d->config->west_texture = load_texture(cub3d->mlx, "../../texture/kanban_nature_chouju_hogoku.xpm");
-	cub3d->config->south_texture = load_texture(cub3d->mlx, "../../texture/building_takoyaki_yatai.xpm");
-	cub3d->config->north_texture = load_texture(cub3d->mlx, "../../texture/onepiece06_chopper.xpm");
+	cub3d->config->east_texture = load_texture(cub3d->mlx, "../../textures/animal_chara_radio_azarashi.xpm");
+	cub3d->config->west_texture = load_texture(cub3d->mlx, "../../textures/building_kokuzeikyoku.xpm");
+	//cub3d->config->west_texture = load_texture(cub3d->mlx, "../../textures/kanban_nature_chouju_hogoku.xpm");
+	cub3d->config->south_texture = load_texture(cub3d->mlx, "../../textures/building_takoyaki_yatai.xpm");
+	cub3d->config->north_texture = load_texture(cub3d->mlx, "../../textures/onepiece06_chopper.xpm");
     //
 	init_key_state(cub3d->key_state);
 }

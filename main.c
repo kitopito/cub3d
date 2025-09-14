@@ -14,24 +14,26 @@
 
 int main(int ac, char **av)
 {
-  t_data data;
-  int i = 0;
+	t_config	cfg;
+	int			i;
 
-  if (ac != 2)
-  {
-    ft_putstr_fd("Usage: ./cub3D <map_file>\n", 2);
-    return (EXIT_FAILURE);
-  }
-  init_data(&data);
-  parse_map(&data, av[1]);
-
-  // マップ表示（テスト用）
-  while (data.map[i])
-  {
-    printf("%s\n", data.map[i]);
-    i++;
-  }
-
-  free_map(data.map);
-  return (EXIT_SUCCESS);
+	if (ac != 2)
+	{
+		ft_putstr_fd("Usage: ./cub3D <map_file>\n", 2);
+		return (EXIT_FAILURE);
+	}
+	init_config(&cfg);
+	parse_map(&cfg, av[1]);
+	if (!check_components(&cfg))
+		return (EXIT_FAILURE);
+	//マップの表示
+	print_parsed(&cfg);
+	i = 0;
+	while (cfg.map && cfg.map[i])
+	{
+		printf("%s\n", cfg.map[i]);
+		i++;
+	}
+	free_map(cfg.map);
+	return (EXIT_SUCCESS);
 }

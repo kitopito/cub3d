@@ -12,9 +12,15 @@
 
 #include "../cub3d.h"
 
-void init_data(t_data *data)
+void	init_config(t_config *cfg)
 {
-  data->map = NULL;
-  data->rows = 0;
-  data->columns = 0;
+	int	i;
+
+	ft_bzero(cfg, sizeof(*cfg));
+	i = 0;
+	while (i < TEX_MAX)
+	{
+		cfg->texture_path[i] = NULL;
+		i++;
+	}
 }

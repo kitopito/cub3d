@@ -95,7 +95,7 @@ typedef struct s_cub3d
 void	init_config(t_config *cfg);
 
 // parser.c
-void	parse_map(t_config *cfg, char *filepath);
+int	parse_map(t_config *cfg, char *filepath);
 int		set_metadata(t_config *cfg, char **lines, int line_count, int *map_start);
 void	set_map_from(t_config *cfg, char **lines, int start, int count);
 int		find_player_start(t_config *cfg);

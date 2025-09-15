@@ -122,6 +122,12 @@ void init_test_cub3d(t_cub3d *cub3d)
 	//cub3d->config->west_texture = load_texture(cub3d->mlx, "../../textures/kanban_nature_chouju_hogoku.xpm");
 	cub3d->config->south_texture = load_texture(cub3d->mlx, cub3d->config->texture_path[TEX_SO]);
 	cub3d->config->north_texture = load_texture(cub3d->mlx, cub3d->config->texture_path[TEX_NO]);
+	if (cub3d->config->east_texture == NULL || cub3d->config->west_texture == NULL
+		|| cub3d->config->south_texture == NULL || cub3d->config->north_texture == NULL)
+	{
+		perror("Failed to load texture");
+		end_cub3d(cub3d);
+	}
     //
 	// init_key_state(cub3d->key_state);
 }
@@ -140,6 +146,7 @@ int	main(int ac, char **av)
 
 	init_cub3d(&cub3d);
 	set_cub3d(&cub3d, filename);
+	printf("ふが　\n");
 	init_test_cub3d(&cub3d);
     // cub3d.player = malloc(sizeof(t_player));
     // cub3d.config = malloc(sizeof(t_config));
@@ -162,14 +169,6 @@ int	main(int ac, char **av)
 	mlx_hook(cub3d.win, 2, 1L << 0, key_down, &cub3d);
 	mlx_hook(cub3d.win, 17, 0, destroy_hook, &cub3d);
 	mlx_loop_hook(cub3d.mlx, render, &cub3d);
-    cub3d.img->img = mlx_new_image(cub3d.mlx, windowWidth, windowHeight);
-	if (cub3d.img->img == NULL) {
-		// end_cub3d(&cub3d);
-		// perror("Failed to create image");
-		exit(EXIT_FAILURE);
-	}
-	cub3d.img->addr = mlx_get_data_addr(cub3d.img->img, &cub3d.img->bits_per_pixel, &cub3d.img->line_length,
-			&cub3d.img->endian);
 	// my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	dda(&cub3d);
 	mlx_put_image_to_window(cub3d.mlx, cub3d.win, cub3d.img->img, 0, 0);

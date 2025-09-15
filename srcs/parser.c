@@ -144,7 +144,7 @@ int	find_player_start(t_config *cfg)
 	return (count == 1);
 }
 
-void	parse_map(t_config *cfg, char *filepath)
+int	parse_map(t_config *cfg, char *filepath)
 {
 	int		n;
 	int		map_start;
@@ -155,12 +155,15 @@ void	parse_map(t_config *cfg, char *filepath)
 	if (!file || n <= 0)
 	{
 		perror("invalid or empty map file");
-		exit(EXIT_FAILURE);
+		return 0;
 	}
 	if (!set_metadata(cfg, file, n, &map_start))
 	{
+		while (n)
+			free(file[n-- - 1]);
+		free(file);
 		perror("metadata parse error");
-		exit(EXIT_FAILURE);
+		return 0;
 	}
 	set_map_from(cfg, file, map_start, n);
 	(void)find_player_start(cfg);
@@ -170,4 +173,5 @@ void	parse_map(t_config *cfg, char *filepath)
 	while (i < n)
 		free(file[i++]);
 	free(file);
+	return 1;
 }

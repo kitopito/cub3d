@@ -78,51 +78,50 @@ int	dda(t_cub3d *cub3d)
 	int			draw_start;
 	int			k;
 	int			color;
-	t_dda		*dda_data;
+	t_dda		dda_data;
 	void *img_data = cub3d->img;
 
-	dda_data = malloc(sizeof(t_dda));
 	// error 
-	init_dda(dda_data, cub3d);
+	init_dda(&dda_data, cub3d);
 	//fill_img(cub3d->img, 0x000000);
 	fill_img_ceiling_floor(cub3d->img, cub3d->config);
 	i = 0;
 	while (i < windowWidth)
 	{
 		camera_x = 2 * i / (double)windowWidth - 1;
-		ray_dir.x = dda_data->dirX + camera_x * dda_data->planeX;
-		ray_dir.y = dda_data->dirY + camera_x * dda_data->planeY;
-		mapX = (int)dda_data->x;
-		mapY = (int)dda_data->y;
+		ray_dir.x = dda_data.dirX + camera_x * dda_data.planeX;
+		ray_dir.y = dda_data.dirY + camera_x * dda_data.planeY;
+		mapX = (int)dda_data.x;
+		mapY = (int)dda_data.y;
 		if (ray_dir.x != 0)
-			dda_data->delta_x = fabs(1 / ray_dir.x);
+			dda_data.delta_x = fabs(1 / ray_dir.x);
 		else
-			dda_data->delta_x = 1e30;
+			dda_data.delta_x = 1e30;
 		if (ray_dir.y != 0)
-			dda_data->delta_y = fabs(1 / ray_dir.y);
+			dda_data.delta_y = fabs(1 / ray_dir.y);
 		else
-			dda_data->delta_y = 1e30;
+			dda_data.delta_y = 1e30;
 		if (ray_dir.x < 0)
 		{
-			dda_data->step_x = -1;
-			dda_data->side_dist_x = (dda_data->x - mapX) * dda_data->delta_x;
+			dda_data.step_x = -1;
+			dda_data.side_dist_x = (dda_data.x - mapX) * dda_data.delta_x;
 		}
 		else
 		{
-			dda_data->step_x = 1;
-			dda_data->side_dist_x = (mapX + 1.0 - dda_data->x)
-				* dda_data->delta_x;
+			dda_data.step_x = 1;
+			dda_data.side_dist_x = (mapX + 1.0 - dda_data.x)
+				* dda_data.delta_x;
 		}
 		if (ray_dir.y < 0)
 		{
-			dda_data->step_y = -1;
-			dda_data->side_dist_y = (dda_data->y - mapY) * dda_data->delta_y;
+			dda_data.step_y = -1;
+			dda_data.side_dist_y = (dda_data.y - mapY) * dda_data.delta_y;
 		}
 		else
 		{
-			dda_data->step_y = 1;
-			dda_data->side_dist_y = (mapY + 1.0 - dda_data->y)
-				* dda_data->delta_y;
+			dda_data.step_y = 1;
+			dda_data.side_dist_y = (mapY + 1.0 - dda_data.y)
+				* dda_data.delta_y;
 		}
 		// printf("Ray direction: (%lf, %lf)\n", ray_dir.x, ray_dir.y);
 		// printf("Delta distances: X = %lf, Y = %lf\n", dda_data->delta_x,
@@ -135,31 +134,31 @@ int	dda(t_cub3d *cub3d)
 				// printf("Current map position: (%d, %d)\n", mapX, mapY);
 				// printf("Side distances: X = %f, Y = %f\n",
 				// dda_data->side_dist_x, dda_data->side_dist_y);
-					if (dda_data->side_dist_x < dda_data->side_dist_y)
+					if (dda_data.side_dist_x < dda_data.side_dist_y)
 					{
-						dda_data->side_dist_x += dda_data->delta_x;
-						mapX += dda_data->step_x;
+						dda_data.side_dist_x += dda_data.delta_x;
+						mapX += dda_data.step_x;
 						side = SIDE_X;
 					}
 					else
 					{
-						dda_data->side_dist_y += dda_data->delta_y;
-						mapY += dda_data->step_y;
+						dda_data.side_dist_y += dda_data.delta_y;
+						mapY += dda_data.step_y;
 						side = SIDE_Y;
 					}
 					// printf("Updated map position: (%d, %d)\n", mapX, mapY);
-					if (dda_data->map[mapY][mapX] > '0')
+					if (dda_data.map[mapY][mapX] > '0')
 					{
-						// printf("Hit wall at (%d, %d) %c\n", mapX, mapY, dda_data->map[mapY][mapX]);
+						// printf("Hit wall at (%d, %d) %c\n", mapX, mapY, dda_data.map[mapY][mapX]);
 						break ;
 					}
 			}
 			// printf("Map hit at (%d, %d) with side %d\n", mapX, mapY, side);
 			double perp_wall_dist;
 			if (side == SIDE_X)
-				perp_wall_dist = dda_data->side_dist_x - dda_data->delta_x;
+				perp_wall_dist = dda_data.side_dist_x - dda_data.delta_x;
 			else
-				perp_wall_dist = dda_data->side_dist_y - dda_data->delta_y;
+				perp_wall_dist = dda_data.side_dist_y - dda_data.delta_y;
 			//
 			t_img_data *texture;
 			if (side == SIDE_X && ray_dir.x > 0)
@@ -173,9 +172,9 @@ int	dda(t_cub3d *cub3d)
 			//
 			double wall_x;
 			if (side == SIDE_X)
-				wall_x = dda_data->y + perp_wall_dist * ray_dir.y;
+				wall_x = dda_data.y + perp_wall_dist * ray_dir.y;
 			else
-				wall_x = dda_data->x + perp_wall_dist * ray_dir.x;
+				wall_x = dda_data.x + perp_wall_dist * ray_dir.x;
 			wall_x -= floor(wall_x);
 			int tex_x = (int)(wall_x * texture->width); // width - 1にする？
 			if ((side == SIDE_X && ray_dir.x > 0) || (side == SIDE_Y && ray_dir.y < 0))

@@ -77,13 +77,21 @@ void	set_cub3d(t_cub3d *cub3d, char *filepath)
 		// perror("Failed to initialize Cub3D");
 		exit(EXIT_FAILURE);
 	}
+    cub3d->img->img = mlx_new_image(cub3d->mlx, windowWidth, windowHeight);
+	if (cub3d->img->img == NULL) {
+		end_cub3d(cub3d);
+		exit(EXIT_FAILURE);
+	}
+	cub3d->img->addr = mlx_get_data_addr(cub3d->img->img, &cub3d->img->bits_per_pixel, &cub3d->img->line_length,
+			&cub3d->img->endian);
 	init_key_state(cub3d->key_state);
 	// set_config(cub3d, filepath);
-	parse_map(cub3d->config, filepath);
-	if (check_components(cub3d->config) == 0)
+	
+	if (parse_map(cub3d->config, filepath) == 0 || check_components(cub3d->config) == 0)
 	{
+		printf("Error\n");
 		// in parse_map  check_map*(), load_textures() are called
-		free_cub3d(cub3d);
+		end_cub3d(cub3d);
 		// perror("Failed to parse map");
 		exit(EXIT_FAILURE);
 	}
@@ -93,6 +101,7 @@ void	free_cub3d(t_cub3d *cub3d)
 {
 	cub3d->mlx = NULL;
 	cub3d->win = NULL;
+	// free
 	if (cub3d->config)
 	{
 		free(cub3d->config->north_texture);

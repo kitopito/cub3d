@@ -103,9 +103,40 @@ int destroy_hook(t_cub3d *data) {
     return 0;
 }
 
-void end_cub3d(t_cub3d *data) {
+void end_cub3d(t_cub3d *cub3d) {
+	free(cub3d->player);
+	free(cub3d->key_state);
+	if (cub3d->config)
+	{
+		free_map(cub3d->config->map);
+        if(cub3d->config->east_texture != NULL)
+            mlx_destroy_image(cub3d->mlx, cub3d->config->east_texture->img);
+        if (cub3d->config->west_texture != NULL)
+            mlx_destroy_image(cub3d->mlx, cub3d->config->west_texture->img);
+        if (cub3d->config->south_texture != NULL)
+            mlx_destroy_image(cub3d->mlx, cub3d->config->south_texture->img);
+        if (cub3d->config->north_texture != NULL)
+            mlx_destroy_image(cub3d->mlx, cub3d->config->north_texture->img);
+		free(cub3d->config->north_texture);
+		free(cub3d->config->south_texture);
+		free(cub3d->config->west_texture);
+		free(cub3d->config->east_texture);
+        free(cub3d->config->texture_path[TEX_EA]);
+        free(cub3d->config->texture_path[TEX_WE]);
+        free(cub3d->config->texture_path[TEX_SO]);
+        free(cub3d->config->texture_path[TEX_NO]);
+		free(cub3d->config);
+	}
     //
-    (void)data;
+    if (cub3d->img != NULL && cub3d->img->img != NULL) {
+        // printf("ほげ %p %p %p\n", cub3d->mlx, cub3d->img, cub3d->img->img);
+        // printf("ほげ %d %d\n", cub3d->img->width, cub3d->img->height);
+        mlx_destroy_image(cub3d->mlx, cub3d->img->img);
+    }
+	free(cub3d->img);
+    mlx_destroy_window(cub3d->mlx, cub3d->win);
+    mlx_destroy_display(cub3d->mlx);
+    free(cub3d->mlx);
 }
 
 void rotate_player(t_player *player, double angle) {

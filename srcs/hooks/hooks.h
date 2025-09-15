@@ -27,7 +27,8 @@ typedef struct s_player t_player;
 # define KEYCODE_RIGHT 65363
 
 # define VELOCITY 0.03
-# define ROTATION_ANGLE 0.005
+//# define ROTATION_ANGLE 0.005
+# define ROTATION_ANGLE 0.01
 
 void init_key_state(t_key_state *state);
 

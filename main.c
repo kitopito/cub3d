@@ -74,8 +74,8 @@ void init_test_cub3d(t_cub3d *cub3d)
 	//
 	// cub3d->player->x = 22.0;
 	// cub3d->player->y = 12.0;
-	cub3d->player->x = cub3d->config->start_x;
-	cub3d->player->y = cub3d->config->start_y;
+	cub3d->player->x = cub3d->config->start_x + 0.5;
+	cub3d->player->y = cub3d->config->start_y + 0.5;
 	if (cub3d->config->start_direction == 'W') {
 		cub3d->player->dir_x = -1.0;
 		cub3d->player->dir_y = 0.0;

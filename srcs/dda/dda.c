@@ -38,6 +38,32 @@ void	fill_img(t_img_data *img_data, int color)
 	}
 }
 
+void fill_img_ceiling_floor(t_img_data *img_data, t_config *config)
+{
+	int i = 0;
+	int k;
+	while (i < windowHeight / 2)
+	{
+		k = 0;
+		while (k < windowWidth)
+		{
+			my_mlx_pixel_put(img_data, k, i, config->ceiling_color);
+			k++;
+		}
+		i++;
+	}
+	while (i < windowHeight)
+	{
+		k = 0;
+		while (k < windowWidth)
+		{
+			my_mlx_pixel_put(img_data, k, i, config->floor_color);
+			k++;
+		}
+		i++;
+	}
+}
+
 int	dda(t_cub3d *cub3d)
 {
 	int			i;
@@ -59,6 +85,7 @@ int	dda(t_cub3d *cub3d)
 	// error 
 	init_dda(dda_data, cub3d);
 	//fill_img(cub3d->img, 0x000000);
+	fill_img_ceiling_floor(cub3d->img, cub3d->config);
 	i = 0;
 	while (i < windowWidth)
 	{
@@ -162,14 +189,6 @@ int	dda(t_cub3d *cub3d)
 				perp_wall_dist = 0.0000000000001;
 			line_height = (int)(h / perp_wall_dist);
 			draw_start = h / 2 - line_height / 2;
-			k = 0;
-			while (k < draw_start)
-			{
-				// printf("ほげw%d\n", k);
-				if (k < windowHeight)
-					my_mlx_pixel_put(img_data, i, k, cub3d->config->ceiling_color);
-				k++;
-			}
 			k = draw_start;
 			while (k < draw_start + line_height)
 			{
@@ -182,11 +201,6 @@ int	dda(t_cub3d *cub3d)
 					// color);
 				}
 				tex_pos += tex_step;
-				k++;
-			}
-			while (k < windowHeight)
-			{
-				my_mlx_pixel_put(img_data, i, k, cub3d->config->floor_color);
 				k++;
 			}
 			i++;

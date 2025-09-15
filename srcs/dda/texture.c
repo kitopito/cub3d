@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   texture.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/15 18:28:14 by ywada             #+#    #+#             */
+/*   Updated: 2025/09/15 18:28:27 by ywada            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "dda.h"
 #include <mlx.h>
@@ -19,14 +30,15 @@ t_img_data	*load_texture(void *mlx, char *filename)
 	texture = malloc(sizeof(t_img_data));
 	if (texture == NULL)
 		return (NULL);
-	texture->img = mlx_xpm_file_to_image(mlx, filename, &texture->width, &texture->height);
+	texture->img = mlx_xpm_file_to_image(mlx, filename, &texture->width,
+			&texture->height);
 	if (texture->img == NULL)
 	{
 		free(texture);
 		return (NULL);
 	}
-	texture->addr = mlx_get_data_addr(texture->img, &texture->bits_per_pixel, 
-		&texture->line_length, &texture->endian);
+	texture->addr = mlx_get_data_addr(texture->img, &texture->bits_per_pixel,
+			&texture->line_length, &texture->endian);
 	if (texture->addr == NULL)
 	{
 		mlx_destroy_image(mlx, texture->img);
@@ -37,7 +49,8 @@ t_img_data	*load_texture(void *mlx, char *filename)
 }
 
 // cub3d.img->img = mlx_new_image(cub3d.mlx, windowWidth, windowHeight);
-// cub3d.img->addr = mlx_get_data_addr(cub3d.img->img, &cub3d.img->bits_per_pixel, &cub3d.img->line_length,
+// cub3d.img->addr = mlx_get_data_addr(cub3d.img->img,
+// &cub3d.img->bits_per_pixel, &cub3d.img->line_length,
 // 		&cub3d.img->endian);
 
 // void	free_texture(void *mlx, t_img_data *texture)

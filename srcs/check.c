@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/15 18:28:44 by ywada             #+#    #+#             */
+/*   Updated: 2025/09/15 18:28:46 by ywada            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // srcs/check.c
 #include "../cub3d.h"
 
-static int file_exists(const char *p)
+static int	file_exists(const char *p)
 {
-	int fd;
+	int	fd;
 
 	if (!p || !*p)
 		return (0);
@@ -14,12 +26,12 @@ static int file_exists(const char *p)
 	return (1);
 }
 
-static int has_allowed_chars(const t_config *cfg)
+static int	has_allowed_chars(const t_config *cfg)
 {
-	int y;
-	int x;
-	char c;
-	int len;
+	int		y;
+	int		x;
+	char	c;
+	int		len;
 
 	y = 0;
 	while (y < cfg->rows)
@@ -38,13 +50,13 @@ static int has_allowed_chars(const t_config *cfg)
 	return (1);
 }
 
-static int no_zero_on_border(const t_config *cfg)
+static int	no_zero_on_border(const t_config *cfg)
 {
-	int x;
-	int len_top;
-	int len_bot;
-	int y;
-	int len;
+	int	x;
+	int	len_top;
+	int	len_bot;
+	int	y;
+	int	len;
 
 	if (cfg->rows == 0)
 		return (0);
@@ -80,13 +92,13 @@ static int no_zero_on_border(const t_config *cfg)
 	return (1);
 }
 
-static int closed_by_walls(const t_config *cfg)
+static int	closed_by_walls(const t_config *cfg)
 {
-	int y;
-	int x;
-	int len;
-	int len_up;
-	int len_dn;
+	int	y;
+	int	x;
+	int	len;
+	int	len_up;
+	int	len_dn;
 
 	y = 0;
 	while (y < cfg->rows)
@@ -114,17 +126,16 @@ static int closed_by_walls(const t_config *cfg)
 	return (1);
 }
 
-static int in_range_rgb(const int rgb[3])
+static int	in_range_rgb(const int rgb[3])
 {
-	return (rgb[0] >= 0 && rgb[0] <= 255
-		&& rgb[1] >= 0 && rgb[1] <= 255
+	return (rgb[0] >= 0 && rgb[0] <= 255 && rgb[1] >= 0 && rgb[1] <= 255
 		&& rgb[2] >= 0 && rgb[2] <= 255);
 }
 
 int	check_components(const t_config *cfg)
 {
-	int i;
-	int len_row;
+	int	i;
+	int	len_row;
 
 	if (!cfg->map || cfg->rows <= 0)
 		return (ft_putendl_fd("Error: invalid map", 2), 0);

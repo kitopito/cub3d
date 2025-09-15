@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/11 19:14:34 by ywada             #+#    #+#             */
+/*   Updated: 2025/09/15 21:22:06 by ywada            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "srcs/hooks/key_state.h"
 # include "libft/libft.h"
+# include "srcs/hooks/key_state.h"
 # include <fcntl.h>
-# include <stdlib.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <unistd.h>
 
-# define windowWidth 1280
-# define windowHeight 720
+# define WINDOW_WIDTH 1280
+# define WINDOW_HEIGHT 720
 
 typedef struct s_data
 {
@@ -55,7 +67,7 @@ typedef struct s_config
 	char		start_direction;
 	int			floor_color;
 	int			ceiling_color;
-	int     player_count;
+	int			player_count;
 }				t_config;
 
 typedef struct s_player
@@ -78,32 +90,34 @@ typedef struct s_cub3d
 	t_key_state	*key_state;
 }				t_cub3d;
 
-
 // init.c
-void	init_config(t_config *cfg);
+void			init_config(t_config *cfg);
 
 // parser.c
-void	parse_map(t_config *cfg, char *filepath);
-int		set_metadata(t_config *cfg, char **lines, int line_count, int *map_start);
-void	set_map_from(t_config *cfg, char **lines, int start, int count);
-int		find_player_start(t_config *cfg);
-
+int				parse_map(t_config *cfg, char *filepath);
+int				set_metadata(t_config *cfg, char **lines, int line_count,
+					int *map_start);
+void			set_map_from(t_config *cfg, char **lines, int start, int count);
+int				find_player_start(t_config *cfg);
 
 // debug.c
-void	print_parsed(const t_config *cfg);
+void			print_parsed(const t_config *cfg);
 
-//check.c
-int		check_components(const t_config *cfg);
+// check.c
+int				check_components(const t_config *cfg);
+int				closed_by_walls(const t_config *cfg);
+int				no_zero_on_border(const t_config *cfg);
 
 // utils.c
-void    free_map(char **map);
-char    *skip_ws(char *s);
-char    *dup_after_key(char *line, int skip);
-void    split_free(char **sp);
-char	**read_all_lines(char *path, int *out_n);
+void			free_map(char **map);
+char			*skip_ws(char *s);
+char			*dup_after_key(char *line, int skip);
+void			split_free(char **sp);
+char			**read_all_lines(char *path, int *out_n);
 
 // prototypes
 void			init_cub3d(t_cub3d *cub3d);
 void			set_cub3d(t_cub3d *cub3d, char *filepath);
+void			set_cub3d2(t_cub3d *cub3d);
 void			free_cub3d(t_cub3d *cub3d);
 #endif

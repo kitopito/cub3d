@@ -5,8 +5,11 @@ NAME = cub3d
 
 SRC_DIR := srcs
 SRCS_MAIN := main.c
-SRCS_UTILS := $(addprefix $(SRC_DIR)/, init.c parser.c utils.c debug.c check.c)
-SRCS := $(SRCS_MAIN) $(SRCS_UTILS)
+SRCS_UTILS := $(addprefix $(SRC_DIR)/, init.c parser.c find_player.c utils.c debug.c check.c check_map.c cub3d.c)
+SRCS_DDA := $(addprefix $(SRC_DIR)/dda/, dda.c dda_utils.c texture.c)
+SRCS_HOOKS := $(addprefix $(SRC_DIR)/hooks/, hooks.c key_hook.c)
+
+SRCS := $(SRCS_MAIN) $(SRCS_UTILS) $(SRCS_DDA) $(SRCS_HOOKS)
 OBJS := $(SRCS:.c=.o)
 
 LIBFT_DIR := libft
@@ -42,7 +45,7 @@ $(MINILIBX):
 	$(MAKE) -C $(MLX_DIR)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(DEBUG) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
@@ -55,6 +58,9 @@ fclean:
 	-$(MAKE) -C $(MLX_DIR) fclean || $(MAKE) -C $(MLX_DIR) clean
 
 re: fclean all
+
+debug:
+	$(MAKE) DEBUG="-g" re
 
 test: $(NAME) test-valid test-invalid
 

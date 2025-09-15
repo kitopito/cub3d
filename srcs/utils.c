@@ -6,24 +6,25 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:14:48 by ywada             #+#    #+#             */
-/*   Updated: 2025/08/11 19:15:51 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/15 20:50:12 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void free_map(char **map)
+void	free_map(char **map)
 {
-  int i = 0;
+	int	i;
 
-  if (!map)
-    return;
-  while (map[i])
-  {
-    free(map[i]);
-    i++;
-  }
-  free(map);
+	i = 0;
+	if (!map)
+		return ;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
 }
 
 static int	count_lines(char *path)

@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:24:38 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/15 18:26:05 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/15 21:21:59 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ t_config	*new_config(void)
 // 	return (0);
 // }
 
-void	set_cub3d(t_cub3d *cub3d, char *filepath)
+void	alloc_cub3d(t_cub3d *cub3d)
 {
-	// init_cub3d(cub3d);
 	cub3d->mlx = mlx_init();
-	cub3d->win = mlx_new_window(cub3d->mlx, windowWidth, windowHeight, "cub3d");
+	cub3d->win = mlx_new_window(cub3d->mlx, WINDOW_WIDTH, WINDOW_HEIGHT,
+			"cub3d");
 	cub3d->config = new_config();
 	cub3d->player = malloc(sizeof(t_player));
 	cub3d->img = malloc(sizeof(t_img_data));
@@ -74,10 +74,15 @@ void	set_cub3d(t_cub3d *cub3d, char *filepath)
 		|| cub3d->key_state == NULL)
 	{
 		free_cub3d(cub3d);
-		// perror("Failed to initialize Cub3D");
+		perror("Failed to initialize Cub3D");
 		exit(EXIT_FAILURE);
 	}
-	cub3d->img->img = mlx_new_image(cub3d->mlx, windowWidth, windowHeight);
+}
+
+void	set_cub3d(t_cub3d *cub3d, char *filepath)
+{
+	alloc_cub3d(cub3d);
+	cub3d->img->img = mlx_new_image(cub3d->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	if (cub3d->img->img == NULL)
 	{
 		end_cub3d(cub3d);
@@ -87,23 +92,20 @@ void	set_cub3d(t_cub3d *cub3d, char *filepath)
 			&cub3d->img->bits_per_pixel, &cub3d->img->line_length,
 			&cub3d->img->endian);
 	init_key_state(cub3d->key_state);
-	// set_config(cub3d, filepath);
 	if (parse_map(cub3d->config, filepath) == 0
 		|| check_components(cub3d->config) == 0)
 	{
-		// printf("Error\n");
-		// in parse_map  check_map*(), load_textures() are called
 		end_cub3d(cub3d);
-		// perror("Failed to parse map");
 		exit(EXIT_FAILURE);
 	}
 }
 
 void	free_cub3d(t_cub3d *cub3d)
 {
-	cub3d->mlx = NULL;
-	cub3d->win = NULL;
-	// free
+	if (cub3d->win && cub3d->mlx)
+		mlx_destroy_window(cub3d->mlx, cub3d->win);
+	if (cub3d->mlx)
+		mlx_destroy_display(cub3d->mlx);
 	if (cub3d->config)
 	{
 		free(cub3d->config->north_texture);

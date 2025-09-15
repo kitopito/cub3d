@@ -5,9 +5,9 @@ NAME = cub3d
 
 SRC_DIR := srcs
 SRCS_MAIN := main.c
-SRCS_UTILS := $(addprefix $(SRC_DIR)/, init.c parser.c utils.c debug.c check.c cub3d.c)
-SRCS_DDA := $(addprefix $(SRC_DIR)/dda/, dda.c texture.c)
-SRCS_HOOKS := $(addprefix $(SRC_DIR)/hooks/, key_hook.c)
+SRCS_UTILS := $(addprefix $(SRC_DIR)/, init.c parser.c find_player.c utils.c debug.c check.c check_map.c cub3d.c)
+SRCS_DDA := $(addprefix $(SRC_DIR)/dda/, dda.c dda_utils.c texture.c)
+SRCS_HOOKS := $(addprefix $(SRC_DIR)/hooks/, hooks.c key_hook.c)
 
 SRCS := $(SRCS_MAIN) $(SRCS_UTILS) $(SRCS_DDA) $(SRCS_HOOKS)
 OBJS := $(SRCS:.c=.o)

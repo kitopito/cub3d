@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 18:29:07 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/15 20:18:40 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/15 21:26:58 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@
 // 		cfg->floor_rgb[2]);
 // 	printf("C=%d,%d,%d\n", cfg->ceiling_rgb[0], cfg->ceiling_rgb[1],
 // 		cfg->ceiling_rgb[2]);
-// 	f_hex = (cfg->floor_rgb[0] << 16) | (cfg->floor_rgb[1] << 8) | cfg->floor_rgb[2];
-// 	c_hex = (cfg->ceiling_rgb[0] << 16) | (cfg->ceiling_rgb[1] << 8) | cfg->ceiling_rgb[2];
+// 	f_hex = (cfg->floor_rgb[0] << 16) | (cfg->floor_rgb[1] << 8) 
+//| cfg->floor_rgb[2];
+// 	c_hex = (cfg->ceiling_rgb[0] << 16) | (cfg->ceiling_rgb[1] << 8) 
+// | cfg->ceiling_rgb[2];
 // 	printf("F_HEX=%d\n", f_hex);
 // 	printf("C_HEX=%d\n", c_hex);
 // 	printf("START=%d,%d,%c\n", cfg->start_x, cfg->start_y,

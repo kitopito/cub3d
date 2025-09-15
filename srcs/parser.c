@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:14:51 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/15 20:46:45 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/15 21:27:40 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,17 +125,19 @@ int	parse_map(t_config *cfg, char *filepath)
 
 	file = read_all_lines(filepath, &n);
 	if (!file || n <= 0)
-		return (perror("invalid or empty map file"), (0));
+		return (perror("Error\ninvalid or empty map file"), (0));
 	if (!set_metadata(cfg, file, n, &map_start))
 	{
 		while (n)
 			free(file[n-- - 1]);
-		return (free(file), perror("metadata parse error"), (0));
+		return (free(file), perror("Error\nmetadata parse error"), (0));
 	}
 	set_map_from(cfg, file, map_start, n);
 	(void)find_player_start(cfg);
-	cfg->floor_color = (cfg->floor_rgb[0] << 16) | (cfg->floor_rgb[1] << 8) | cfg->floor_rgb[2];
-	cfg->ceiling_color = (cfg->ceiling_rgb[0] << 16) | (cfg->ceiling_rgb[1] << 8) | cfg->ceiling_rgb[2];
+	cfg->floor_color = (cfg->floor_rgb[0] << 16)
+		| (cfg->floor_rgb[1] << 8) | cfg->floor_rgb[2];
+	cfg->ceiling_color = (cfg->ceiling_rgb[0] << 16)
+		| (cfg->ceiling_rgb[1] << 8) | cfg->ceiling_rgb[2];
 	i = 0;
 	while (i < n)
 		free(file[i++]);

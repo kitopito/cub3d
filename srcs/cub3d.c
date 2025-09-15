@@ -6,13 +6,13 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:24:38 by ywada             #+#    #+#             */
-/*   Updated: 2025/08/12 17:24:41 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/15 18:26:05 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-#include <mlx.h>
 #include "hooks/hooks.h"
+#include <mlx.h>
 
 void	init_cub3d(t_cub3d *cub3d)
 {
@@ -77,19 +77,21 @@ void	set_cub3d(t_cub3d *cub3d, char *filepath)
 		// perror("Failed to initialize Cub3D");
 		exit(EXIT_FAILURE);
 	}
-    cub3d->img->img = mlx_new_image(cub3d->mlx, windowWidth, windowHeight);
-	if (cub3d->img->img == NULL) {
+	cub3d->img->img = mlx_new_image(cub3d->mlx, windowWidth, windowHeight);
+	if (cub3d->img->img == NULL)
+	{
 		end_cub3d(cub3d);
 		exit(EXIT_FAILURE);
 	}
-	cub3d->img->addr = mlx_get_data_addr(cub3d->img->img, &cub3d->img->bits_per_pixel, &cub3d->img->line_length,
+	cub3d->img->addr = mlx_get_data_addr(cub3d->img->img,
+			&cub3d->img->bits_per_pixel, &cub3d->img->line_length,
 			&cub3d->img->endian);
 	init_key_state(cub3d->key_state);
 	// set_config(cub3d, filepath);
-	
-	if (parse_map(cub3d->config, filepath) == 0 || check_components(cub3d->config) == 0)
+	if (parse_map(cub3d->config, filepath) == 0
+		|| check_components(cub3d->config) == 0)
 	{
-		printf("Error\n");
+		// printf("Error\n");
 		// in parse_map  check_map*(), load_textures() are called
 		end_cub3d(cub3d);
 		// perror("Failed to parse map");

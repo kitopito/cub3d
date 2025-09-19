@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:15:22 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/15 21:21:59 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/19 18:58:53 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#define MIN_WALL_DISTANCE 1e-13
 
 void	dda_init_step(t_dda *dda_data)
 {
@@ -79,12 +81,12 @@ void	calc_wall_dist(t_dda *dda_data)
 		dda_data->wall_x = dda_data->x + dda_data->perp_wall_dist
 			* dda_data->ray_dir.x;
 	if (dda_data->perp_wall_dist == 0)
-		dda_data->perp_wall_dist = 0.0000000000001;
+		dda_data->perp_wall_dist = MIN_WALL_DISTANCE;
 	dda_data->h = WINDOW_HEIGHT;
 	dda_data->wall_x -= floor(dda_data->wall_x);
 	dda_data->tex_x = (int)(dda_data->wall_x * dda_data->texture->width);
-	if ((dda_data->side == SIDE_X && dda_data->ray_dir.x > 0)
-		|| (dda_data->side == SIDE_Y && dda_data->ray_dir.y < 0))
+	if ((dda_data->side == SIDE_X && dda_data->ray_dir.x < 0)
+		|| (dda_data->side == SIDE_Y && dda_data->ray_dir.y > 0))
 		dda_data->tex_x = dda_data->texture->width - dda_data->tex_x - 1;
 	dda_data->tex_step = (double)dda_data->texture->height
 		/ dda_data->line_height;
@@ -125,11 +127,11 @@ int	dda(t_cub3d *cub3d)
 		dda_init_ray(&dda_data, i);
 		dda_init_step(&dda_data);
 		perform_dda(&dda_data);
-		if (dda_data.side == SIDE_X && dda_data.ray_dir.x > 0)
+		if (dda_data.side == SIDE_X && dda_data.ray_dir.x < 0)
 			dda_data.texture = cub3d->config->east_texture;
-		else if (dda_data.side == SIDE_X && dda_data.ray_dir.x < 0)
+		else if (dda_data.side == SIDE_X && dda_data.ray_dir.x > 0)
 			dda_data.texture = cub3d->config->west_texture;
-		else if (dda_data.side == SIDE_Y && dda_data.ray_dir.y > 0)
+		else if (dda_data.side == SIDE_Y && dda_data.ray_dir.y < 0)
 			dda_data.texture = cub3d->config->south_texture;
 		else
 			dda_data.texture = cub3d->config->north_texture;

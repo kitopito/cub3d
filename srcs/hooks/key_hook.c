@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:15:02 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/15 19:56:12 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/19 18:56:34 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ void	calc_move_vector(t_cub3d *data, double *move_x, double *move_y)
 	}
 	if (data->key_state->a)
 	{
-		*move_x -= data->player->dir_y * VELOCITY;
-		*move_y += data->player->dir_x * VELOCITY;
+		*move_x += data->player->dir_y * VELOCITY;
+		*move_y -= data->player->dir_x * VELOCITY;
 	}
 	if (data->key_state->d)
 	{
-		*move_x += data->player->dir_y * VELOCITY;
-		*move_y -= data->player->dir_x * VELOCITY;
+		*move_x -= data->player->dir_y * VELOCITY;
+		*move_y += data->player->dir_x * VELOCITY;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:15:02 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/15 19:56:12 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/19 17:34:03 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	key_down(int keycode, t_cub3d *data)
 		data->key_state->left = true;
 	if (keycode == KEYCODE_RIGHT)
 		data->key_state->right = true;
+	printf("player pos=(%.2f,%.2f) dir=(%.2f,%.2f)\n", data->player->x,
+		data->player->y, data->player->dir_x, data->player->dir_y);
 	return (0);
 }
 

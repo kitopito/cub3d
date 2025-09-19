@@ -34,7 +34,7 @@ MAKE_LIBFT = $(MAKE) -C $(LIBFT_DIR)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MINILIBX) $(LIBFT)
+$(NAME): $(MINILIBX) $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) $(LIBS) -o $@
 
 $(LIBFT):

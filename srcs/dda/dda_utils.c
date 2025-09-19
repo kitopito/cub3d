@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 19:34:42 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/15 21:21:59 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/19 17:01:40 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	dda_init_ray(t_dda *dda_data, int i)
 
 void	init_dda(t_dda *dda_data, t_cub3d *cub3d)
 {
+	ft_bzero(dda_data, sizeof(t_dda));
 	dda_data->step_x = 1;
 	dda_data->step_y = 1;
 	dda_data->delta_x = 0.5;

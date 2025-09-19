@@ -6,60 +6,62 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 18:29:07 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/19 17:26:08 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/19 19:10:48 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-void	print_parsed(const t_config *cfg)
-{
-	int		i;
-	int		f_hex;
-	int		c_hex;
-	int		x;
-	int		y;
-	char	c;
+// void	print_parsed(const t_config *cfg)
+// {
+// 	int		i;
+// 	int		f_hex;
+// 	int		c_hex;
+// 	int		x;
+// 	int		y;
+// 	char	c;
 
-	i = 0;
-	while (i < TEX_MAX)
-	{
-		if (cfg->texture_path[i])
-			printf("TEX[%d]=%s\n", i, cfg->texture_path[i]);
-		else
-			printf("TEX[%d]=\n", i);
-		i++;
-	}
-	printf("F=%d,%d,%d\n", cfg->floor_rgb[0], cfg->floor_rgb[1],
-		cfg->floor_rgb[2]);
-	printf("C=%d,%d,%d\n", cfg->ceiling_rgb[0], cfg->ceiling_rgb[1],
-		cfg->ceiling_rgb[2]);
-	f_hex = (cfg->floor_rgb[0] << 16) | (cfg->floor_rgb[1] << 8) | cfg->floor_rgb[2];
-	c_hex = (cfg->ceiling_rgb[0] << 16) | (cfg->ceiling_rgb[1] << 8) | cfg->ceiling_rgb[2];
-	printf("F_HEX=%d\n", f_hex);
-	printf("C_HEX=%d\n", c_hex);
-	printf("START=%d,%d,%c\n", cfg->start_x, cfg->start_y,
-		cfg->start_direction ? cfg->start_direction : ' ');
-	printf("SIZE=%d,%d\n", cfg->columns, cfg->rows);
-	//
-	y = 0;
-	while (cfg->map[y])
-	{
-		x = 0;
-		while (cfg->map[y][x])
-		{
-			c = cfg->map[y][x];
-			// if (c == 'V')
-			// 	write(1, "#", 1);
-			// else
-			write(1, &c, 1);
-			x++;
-		}
-		printf("\n");
-		y++;
-	}
-	printf("\n");
-}
+// 	i = 0;
+// 	while (i < TEX_MAX)
+// 	{
+// 		if (cfg->texture_path[i])
+// 			printf("TEX[%d]=%s\n", i, cfg->texture_path[i]);
+// 		else
+// 			printf("TEX[%d]=\n", i);
+// 		i++;
+// 	}
+// 	printf("F=%d,%d,%d\n", cfg->floor_rgb[0], cfg->floor_rgb[1],
+// 		cfg->floor_rgb[2]);
+// 	printf("C=%d,%d,%d\n", cfg->ceiling_rgb[0], cfg->ceiling_rgb[1],
+// 		cfg->ceiling_rgb[2]);
+// 	f_hex = (cfg->floor_rgb[0] << 16) | (cfg->floor_rgb[1] << 8) |
+// 	cfg->floor_rgb[2];
+// 	c_hex = (cfg->ceiling_rgb[0] << 16) | (cfg->ceiling_rgb[1] << 8) |
+// 	cfg->ceiling_rgb[2];
+// 	printf("F_HEX=%d\n", f_hex);
+// 	printf("C_HEX=%d\n", c_hex);
+// 	printf("START=%d,%d,%c\n", cfg->start_x, cfg->start_y,
+// 		cfg->start_direction ? cfg->start_direction : ' ');
+// 	printf("SIZE=%d,%d\n", cfg->columns, cfg->rows);
+// 	//
+// 	y = 0;
+// 	while (cfg->map[y])
+// 	{
+// 		x = 0;
+// 		while (cfg->map[y][x])
+// 		{
+// 			c = cfg->map[y][x];
+// 			// if (c == 'V')
+// 			// 	write(1, "#", 1);
+// 			// else
+// 			write(1, &c, 1);
+// 			x++;
+// 		}
+// 		printf("\n");
+// 		y++;
+// 	}
+// 	printf("\n");
+// }
 
 // void	print_map(t_data *data)
 // {

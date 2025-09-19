@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 19:49:49 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/15 20:58:04 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/19 18:53:35 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ void	rotate_player(t_player *player, double angle)
 
 	old_dir_x = player->dir_x;
 	old_dir_y = player->dir_y;
-	player->dir_x = old_dir_x * cos(angle) - old_dir_y * sin(angle);
-	player->dir_y = old_dir_x * sin(angle) + old_dir_y * cos(angle);
+	player->dir_x = old_dir_x * cos(angle) + old_dir_y * sin(angle);
+	player->dir_y = -old_dir_x * sin(angle) + old_dir_y * cos(angle);
 	old_plane_x = player->plane_x;
 	old_plane_y = player->plane_y;
-	player->plane_x = old_plane_x * cos(angle) - old_plane_y * sin(angle);
-	player->plane_y = old_plane_x * sin(angle) + old_plane_y * cos(angle);
+	player->plane_x = old_plane_x * cos(angle) + old_plane_y * sin(angle);
+	player->plane_y = -old_plane_x * sin(angle) + old_plane_y * cos(angle);
 }

@@ -1,7 +1,7 @@
-NO ./textures/onepiece06_chopper.xpm
-SO ./textures/building_takoyaki_yatai.xpm
-WE ./textures/building_kokuzeikyoku.xpm
-EA ./textures/animal_chara_radio_azarashi.xpm
+NO ./textures/building_takoyaki_yatai.xpm
+SO ./textures/onepiece06_chopper.xpm
+WE ./textures/animal_chara_radio_azarashi.xpm
+EA ./textures/building_kokuzeikyoku.xpm
 
 F 85,0,0
 C 135,206,235

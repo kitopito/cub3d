@@ -6,7 +6,7 @@
 /*   By: ywada <ywada@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:14:54 by ywada             #+#    #+#             */
-/*   Updated: 2025/09/15 20:55:14 by ywada            ###   ########.fr       */
+/*   Updated: 2025/09/19 18:50:22 by ywada            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	set_player(t_cub3d *cub3d)
 		cub3d->player->dir_x = 0.0;
 		cub3d->player->dir_y = -1.0;
 	}
-	cub3d->player->plane_x = PLANE_WIDTH * cub3d->player->dir_y;
-	cub3d->player->plane_y = -PLANE_WIDTH * cub3d->player->dir_x;
+	cub3d->player->plane_x = -PLANE_WIDTH * cub3d->player->dir_y;
+	cub3d->player->plane_y = +PLANE_WIDTH * cub3d->player->dir_x;
 }
 
 void	set_cub3d2(t_cub3d *cub3d)
